@@ -1,0 +1,7 @@
+[Desktop Entry]
+Name=Echoes
+Exec=echoes-linux-ui
+Icon=applications-development
+Type=Application
+Terminal=false
+Categories=Utility;
