@@ -1,5 +1,14 @@
 # Echoes
 
+Echoes is a music app that allows you to connect to multiple sources of music and play them directly through the app. It's album focused, meaning that instead of treating your library as a list of songs, it treats it as a list of albums, allowing you to shuffle albums, browse them based on genres, and more.
+
+The project is split into a platform-agnostic `core` C++ library and per-platform
+UIs. On Linux the UI is built with Qt 6 / KDE Kirigami (see `linux/`). On macOS
+the UI is a native SwiftUI app (see `macos/`) that talks to `core` through an
+Objective-C++ bridge.
+
+Echoes is the (desktop) spiritual successor of [Echo](https://github.com/sleepyfran/echo).
+
 ## Build on Linux
 
 ## Checks
@@ -65,4 +74,17 @@ Install and run from your shell:
 cmake --install build
 # Make sure the install prefix bin directory is in PATH.
 echoes-linux-ui
+```
+
+## Build on macOS
+
+The macOS app is an Xcode project under `macos/` that compiles the `core`
+sources directly, so KDE / Qt are not needed.
+
+To build just the `core` library from the command line (e.g. for CI or a quick
+check), the Linux/KDE UI is disabled automatically on non-Linux platforms:
+
+```bash
+cmake -S . -B build
+cmake --build build
 ```

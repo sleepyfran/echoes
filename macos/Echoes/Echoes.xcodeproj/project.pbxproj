@@ -1,0 +1,641 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		11952C272FFCEC0A0072101C /* CMakeLists.txt in Resources */ = {isa = PBXBuildFile; fileRef = 11952C252FFCEC0A0072101C /* CMakeLists.txt */; };
+		11952C282FFCEC0A0072101C /* greeting.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11952C232FFCEC0A0072101C /* greeting.cpp */; };
+		11952C2D2FFCEC270072101C /* GreetingBridge.mm in Sources */ = {isa = PBXBuildFile; fileRef = 11952C2B2FFCEC270072101C /* GreetingBridge.mm */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		11952C002FFCEA730072101C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 11952BEA2FFCEA710072101C /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 11952BF12FFCEA710072101C;
+			remoteInfo = Echoes;
+		};
+		11952C0A2FFCEA730072101C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 11952BEA2FFCEA710072101C /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 11952BF12FFCEA710072101C;
+			remoteInfo = Echoes;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		11952BF22FFCEA710072101C /* Echoes.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Echoes.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		11952BFF2FFCEA730072101C /* EchoesTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = EchoesTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		11952C092FFCEA730072101C /* EchoesUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = EchoesUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		11952C202FFCEC0A0072101C /* greeting.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = greeting.h; sourceTree = "<group>"; };
+		11952C232FFCEC0A0072101C /* greeting.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = greeting.cpp; sourceTree = "<group>"; };
+		11952C252FFCEC0A0072101C /* CMakeLists.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = CMakeLists.txt; sourceTree = "<group>"; };
+		11952C292FFCEC270072101C /* Echoes-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Echoes-Bridging-Header.h"; sourceTree = "<group>"; };
+		11952C2A2FFCEC270072101C /* GreetingBridge.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GreetingBridge.h; sourceTree = "<group>"; };
+		11952C2B2FFCEC270072101C /* GreetingBridge.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = GreetingBridge.mm; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		11952BF42FFCEA710072101C /* Echoes */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Echoes;
+			sourceTree = "<group>";
+		};
+		11952C022FFCEA730072101C /* EchoesTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = EchoesTests;
+			sourceTree = "<group>";
+		};
+		11952C0C2FFCEA730072101C /* EchoesUITests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = EchoesUITests;
+			sourceTree = "<group>";
+		};
+/* End PBXFileSystemSynchronizedRootGroup section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		11952BEF2FFCEA710072101C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		11952BFC2FFCEA730072101C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		11952C062FFCEA730072101C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		11952BE92FFCEA710072101C = {
+			isa = PBXGroup;
+			children = (
+				11952BF42FFCEA710072101C /* Echoes */,
+				11952C022FFCEA730072101C /* EchoesTests */,
+				11952C0C2FFCEA730072101C /* EchoesUITests */,
+				11952BF32FFCEA710072101C /* Products */,
+				11952C262FFCEC0A0072101C /* core */,
+				11952C2C2FFCEC270072101C /* CoreBridge */,
+			);
+			sourceTree = "<group>";
+		};
+		11952BF32FFCEA710072101C /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				11952BF22FFCEA710072101C /* Echoes.app */,
+				11952BFF2FFCEA730072101C /* EchoesTests.xctest */,
+				11952C092FFCEA730072101C /* EchoesUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		11952C212FFCEC0A0072101C /* echoes */ = {
+			isa = PBXGroup;
+			children = (
+				11952C202FFCEC0A0072101C /* greeting.h */,
+			);
+			path = echoes;
+			sourceTree = "<group>";
+		};
+		11952C222FFCEC0A0072101C /* include */ = {
+			isa = PBXGroup;
+			children = (
+				11952C212FFCEC0A0072101C /* echoes */,
+			);
+			path = include;
+			sourceTree = "<group>";
+		};
+		11952C242FFCEC0A0072101C /* src */ = {
+			isa = PBXGroup;
+			children = (
+				11952C232FFCEC0A0072101C /* greeting.cpp */,
+			);
+			path = src;
+			sourceTree = "<group>";
+		};
+		11952C262FFCEC0A0072101C /* core */ = {
+			isa = PBXGroup;
+			children = (
+				11952C222FFCEC0A0072101C /* include */,
+				11952C242FFCEC0A0072101C /* src */,
+				11952C252FFCEC0A0072101C /* CMakeLists.txt */,
+			);
+			name = core;
+			path = /Users/fran.gonzalez/Developer/personal/apps/echoes/core;
+			sourceTree = "<absolute>";
+		};
+		11952C2C2FFCEC270072101C /* CoreBridge */ = {
+			isa = PBXGroup;
+			children = (
+				11952C292FFCEC270072101C /* Echoes-Bridging-Header.h */,
+				11952C2A2FFCEC270072101C /* GreetingBridge.h */,
+				11952C2B2FFCEC270072101C /* GreetingBridge.mm */,
+			);
+			name = CoreBridge;
+			path = ../CoreBridge;
+			sourceTree = SOURCE_ROOT;
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		11952BF12FFCEA710072101C /* Echoes */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 11952C132FFCEA730072101C /* Build configuration list for PBXNativeTarget "Echoes" */;
+			buildPhases = (
+				11952BEE2FFCEA710072101C /* Sources */,
+				11952BEF2FFCEA710072101C /* Frameworks */,
+				11952BF02FFCEA710072101C /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				11952BF42FFCEA710072101C /* Echoes */,
+			);
+			name = Echoes;
+			packageProductDependencies = (
+			);
+			productName = Echoes;
+			productReference = 11952BF22FFCEA710072101C /* Echoes.app */;
+			productType = "com.apple.product-type.application";
+		};
+		11952BFE2FFCEA730072101C /* EchoesTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 11952C162FFCEA730072101C /* Build configuration list for PBXNativeTarget "EchoesTests" */;
+			buildPhases = (
+				11952BFB2FFCEA730072101C /* Sources */,
+				11952BFC2FFCEA730072101C /* Frameworks */,
+				11952BFD2FFCEA730072101C /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				11952C012FFCEA730072101C /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				11952C022FFCEA730072101C /* EchoesTests */,
+			);
+			name = EchoesTests;
+			packageProductDependencies = (
+			);
+			productName = EchoesTests;
+			productReference = 11952BFF2FFCEA730072101C /* EchoesTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		11952C082FFCEA730072101C /* EchoesUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 11952C192FFCEA730072101C /* Build configuration list for PBXNativeTarget "EchoesUITests" */;
+			buildPhases = (
+				11952C052FFCEA730072101C /* Sources */,
+				11952C062FFCEA730072101C /* Frameworks */,
+				11952C072FFCEA730072101C /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				11952C0B2FFCEA730072101C /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				11952C0C2FFCEA730072101C /* EchoesUITests */,
+			);
+			name = EchoesUITests;
+			packageProductDependencies = (
+			);
+			productName = EchoesUITests;
+			productReference = 11952C092FFCEA730072101C /* EchoesUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		11952BEA2FFCEA710072101C /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 2610;
+				LastUpgradeCheck = 2610;
+				TargetAttributes = {
+					11952BF12FFCEA710072101C = {
+						CreatedOnToolsVersion = 26.1;
+						LastSwiftMigration = 2610;
+					};
+					11952BFE2FFCEA730072101C = {
+						CreatedOnToolsVersion = 26.1;
+						TestTargetID = 11952BF12FFCEA710072101C;
+					};
+					11952C082FFCEA730072101C = {
+						CreatedOnToolsVersion = 26.1;
+						TestTargetID = 11952BF12FFCEA710072101C;
+					};
+				};
+			};
+			buildConfigurationList = 11952BED2FFCEA710072101C /* Build configuration list for PBXProject "Echoes" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 11952BE92FFCEA710072101C;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 11952BF32FFCEA710072101C /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				11952BF12FFCEA710072101C /* Echoes */,
+				11952BFE2FFCEA730072101C /* EchoesTests */,
+				11952C082FFCEA730072101C /* EchoesUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		11952BF02FFCEA710072101C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				11952C272FFCEC0A0072101C /* CMakeLists.txt in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		11952BFD2FFCEA730072101C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		11952C072FFCEA730072101C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		11952BEE2FFCEA710072101C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				11952C282FFCEC0A0072101C /* greeting.cpp in Sources */,
+				11952C2D2FFCEC270072101C /* GreetingBridge.mm in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		11952BFB2FFCEA730072101C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		11952C052FFCEA730072101C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		11952C012FFCEA730072101C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 11952BF12FFCEA710072101C /* Echoes */;
+			targetProxy = 11952C002FFCEA730072101C /* PBXContainerItemProxy */;
+		};
+		11952C0B2FFCEA730072101C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 11952BF12FFCEA710072101C /* Echoes */;
+			targetProxy = 11952C0A2FFCEA730072101C /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		11952C112FFCEA730072101C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = "$(SRCROOT)/../../core/include";
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 26.1;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/../CoreBridge/Echoes-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		11952C122FFCEA730072101C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = "$(SRCROOT)/../../core/include";
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 26.1;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/../CoreBridge/Echoes-Bridging-Header.h";
+			};
+			name = Release;
+		};
+		11952C142FFCEA730072101C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_APP_SANDBOX = YES;
+				ENABLE_PREVIEWS = YES;
+				ENABLE_USER_SELECTED_FILES = readonly;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = me.sleepyfran.Echoes;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				REGISTER_APP_GROUPS = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/../CoreBridge/Echoes-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		11952C152FFCEA730072101C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_APP_SANDBOX = YES;
+				ENABLE_PREVIEWS = YES;
+				ENABLE_USER_SELECTED_FILES = readonly;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = me.sleepyfran.Echoes;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				REGISTER_APP_GROUPS = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/../CoreBridge/Echoes-Bridging-Header.h";
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		11952C172FFCEA730072101C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 26.1;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = me.sleepyfran.EchoesTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Echoes.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Echoes";
+			};
+			name = Debug;
+		};
+		11952C182FFCEA730072101C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 26.1;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = me.sleepyfran.EchoesTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Echoes.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Echoes";
+			};
+			name = Release;
+		};
+		11952C1A2FFCEA730072101C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = me.sleepyfran.EchoesUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TEST_TARGET_NAME = Echoes;
+			};
+			name = Debug;
+		};
+		11952C1B2FFCEA730072101C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = me.sleepyfran.EchoesUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TEST_TARGET_NAME = Echoes;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		11952BED2FFCEA710072101C /* Build configuration list for PBXProject "Echoes" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				11952C112FFCEA730072101C /* Debug */,
+				11952C122FFCEA730072101C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		11952C132FFCEA730072101C /* Build configuration list for PBXNativeTarget "Echoes" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				11952C142FFCEA730072101C /* Debug */,
+				11952C152FFCEA730072101C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		11952C162FFCEA730072101C /* Build configuration list for PBXNativeTarget "EchoesTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				11952C172FFCEA730072101C /* Debug */,
+				11952C182FFCEA730072101C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		11952C192FFCEA730072101C /* Build configuration list for PBXNativeTarget "EchoesUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				11952C1A2FFCEA730072101C /* Debug */,
+				11952C1B2FFCEA730072101C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 11952BEA2FFCEA710072101C /* Project object */;
+}
