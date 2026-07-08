@@ -3,6 +3,10 @@
 #include "entities/file_system.h"
 #include <future>
 
+/**
+ * Virtual class that should be implemented by providers that use file-based operations like
+ * OneDrive.
+ */
 class FileBasedProvider
 {
   public:

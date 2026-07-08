@@ -6,8 +6,6 @@
 #include <KLocalizedContext>
 #include <KLocalizedString>
 
-#include "echoes/greeting.h"
-
 int main(int argc, char* argv[])
 {
     QGuiApplication app(argc, argv);
@@ -19,7 +17,7 @@ int main(int argc, char* argv[])
     QQmlApplicationEngine engine;
     engine.rootContext()->setContextObject(new KLocalizedContext(&engine));
     engine.rootContext()->setContextProperty(QStringLiteral("coreGreeting"),
-                                             QString::fromStdString(echoes::greeting()));
+                                             QStringLiteral("Hello, world!"));
 
     QObject::connect(
         &engine, &QQmlApplicationEngine::objectCreationFailed, &app,
