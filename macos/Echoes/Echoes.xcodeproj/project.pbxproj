@@ -33,12 +33,20 @@
 		11952BF22FFCEA710072101C /* Echoes.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Echoes.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		11952BFF2FFCEA730072101C /* EchoesTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = EchoesTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		11952C092FFCEA730072101C /* EchoesUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = EchoesUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		11952C202FFCEC0A0072101C /* greeting.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = greeting.h; sourceTree = "<group>"; };
 		11952C232FFCEC0A0072101C /* greeting.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = greeting.cpp; sourceTree = "<group>"; };
 		11952C252FFCEC0A0072101C /* CMakeLists.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = CMakeLists.txt; sourceTree = "<group>"; };
 		11952C292FFCEC270072101C /* Echoes-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Echoes-Bridging-Header.h"; sourceTree = "<group>"; };
 		11952C2A2FFCEC270072101C /* GreetingBridge.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GreetingBridge.h; sourceTree = "<group>"; };
 		11952C2B2FFCEC270072101C /* GreetingBridge.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = GreetingBridge.mm; sourceTree = "<group>"; };
+		11F08FF52FFE7611000ABDD0 /* greeting.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = greeting.h; sourceTree = "<group>"; };
+		11F08FF72FFE7611000ABDD0 /* album.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = album.h; sourceTree = "<group>"; };
+		11F08FF82FFE7611000ABDD0 /* artist.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = artist.h; sourceTree = "<group>"; };
+		11F08FF92FFE7611000ABDD0 /* auth.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = auth.h; sourceTree = "<group>"; };
+		11F08FFA2FFE7611000ABDD0 /* file_system.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = file_system.h; sourceTree = "<group>"; };
+		11F08FFB2FFE7611000ABDD0 /* provider.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = provider.h; sourceTree = "<group>"; };
+		11F08FFC2FFE7611000ABDD0 /* track.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = track.h; sourceTree = "<group>"; };
+		11F08FFE2FFE7611000ABDD0 /* crypto_provider.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = crypto_provider.h; sourceTree = "<group>"; };
+		11F08FFF2FFE7611000ABDD0 /* media_provider.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = media_provider.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -106,22 +114,6 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		11952C212FFCEC0A0072101C /* echoes */ = {
-			isa = PBXGroup;
-			children = (
-				11952C202FFCEC0A0072101C /* greeting.h */,
-			);
-			path = echoes;
-			sourceTree = "<group>";
-		};
-		11952C222FFCEC0A0072101C /* include */ = {
-			isa = PBXGroup;
-			children = (
-				11952C212FFCEC0A0072101C /* echoes */,
-			);
-			path = include;
-			sourceTree = "<group>";
-		};
 		11952C242FFCEC0A0072101C /* src */ = {
 			isa = PBXGroup;
 			children = (
@@ -133,7 +125,7 @@
 		11952C262FFCEC0A0072101C /* core */ = {
 			isa = PBXGroup;
 			children = (
-				11952C222FFCEC0A0072101C /* include */,
+				11F090002FFE7611000ABDD0 /* include */,
 				11952C242FFCEC0A0072101C /* src */,
 				11952C252FFCEC0A0072101C /* CMakeLists.txt */,
 			);
@@ -151,6 +143,38 @@
 			name = CoreBridge;
 			path = ../CoreBridge;
 			sourceTree = SOURCE_ROOT;
+		};
+		11F08FF62FFE7611000ABDD0 /* echoes */ = {
+			isa = PBXGroup;
+			children = (
+				11F08FF52FFE7611000ABDD0 /* greeting.h */,
+			);
+			path = echoes;
+			sourceTree = "<group>";
+		};
+		11F08FFD2FFE7611000ABDD0 /* entities */ = {
+			isa = PBXGroup;
+			children = (
+				11F08FF72FFE7611000ABDD0 /* album.h */,
+				11F08FF82FFE7611000ABDD0 /* artist.h */,
+				11F08FF92FFE7611000ABDD0 /* auth.h */,
+				11F08FFA2FFE7611000ABDD0 /* file_system.h */,
+				11F08FFB2FFE7611000ABDD0 /* provider.h */,
+				11F08FFC2FFE7611000ABDD0 /* track.h */,
+			);
+			path = entities;
+			sourceTree = "<group>";
+		};
+		11F090002FFE7611000ABDD0 /* include */ = {
+			isa = PBXGroup;
+			children = (
+				11F08FF62FFE7611000ABDD0 /* echoes */,
+				11F08FFD2FFE7611000ABDD0 /* entities */,
+				11F08FFE2FFE7611000ABDD0 /* crypto_provider.h */,
+				11F08FFF2FFE7611000ABDD0 /* media_provider.h */,
+			);
+			path = include;
+			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
