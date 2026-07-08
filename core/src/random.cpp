@@ -1,5 +1,6 @@
 #include "random.h"
-#include <iterator>
+
+#include <algorithm>
 #include <random>
 
 /**

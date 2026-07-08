@@ -6,11 +6,11 @@
 #include <optional>
 #include <stop_token>
 
-enum AuthConnectStatus : uint8_t
+enum class AuthConnectStatus : uint8_t
 {
-    AuthConnectStatusOk,
-    AuthConnectStatusError,
-    AuthConnectStatusCancelled,
+    Ok,
+    Error,
+    Cancelled,
 };
 
 /**
@@ -24,6 +24,12 @@ struct AuthConnectResult
     std::optional<std::string> error_msg;
 };
 
+struct ConnectResult
+{
+    std::string start_url;
+    std::future<AuthConnectResult> future;
+};
+
 class AuthProvider
 {
   public:
@@ -35,5 +41,5 @@ class AuthProvider
      * authentication info gathered from the process, an error or a cancelled status if the provided
      * cancellation token is used.
      */
-    virtual std::future<AuthConnectResult> connect(std::stop_token cancellation_token) = 0;
+    virtual ConnectResult connect(std::stop_token cancellation_token) = 0;
 };
