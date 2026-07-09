@@ -152,7 +152,7 @@ class OneDriveAuthProvider : AuthProvider
     {
         auto redirect_uri = create_redirect_uri();
 
-        std::stringstream ss;
+        std::ostringstream ss;
         ss << this->config.base_url;
         ss << this->config.start_endpoint;
         ss << "?client_id=" << utils::url_encode(this->config.client_id);
