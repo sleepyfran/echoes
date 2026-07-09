@@ -1,9 +1,7 @@
 #pragma once
 
 #include "entities/auth.h"
-#include <cstdint>
-#include <future>
-#include <optional>
+#include <functional>
 #include <stop_token>
 
 enum class AuthConnectStatus : uint8_t
@@ -24,11 +22,7 @@ struct AuthConnectResult
     std::optional<std::string> error_msg;
 };
 
-struct ConnectResult
-{
-    std::string start_url;
-    std::future<AuthConnectResult> future;
-};
+using StartUrl = std::string;
 
 class AuthProvider
 {
@@ -41,5 +35,6 @@ class AuthProvider
      * authentication info gathered from the process, an error or a cancelled status if the provided
      * cancellation token is used.
      */
-    virtual ConnectResult connect(std::stop_token cancellation_token) = 0;
+    virtual StartUrl connect(std::stop_token cancellation_token,
+                             std::function<void(AuthConnectResult)> on_complete) = 0;
 };

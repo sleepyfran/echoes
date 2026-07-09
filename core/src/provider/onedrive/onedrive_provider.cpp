@@ -4,8 +4,7 @@
 #include "onedrive_json.h"
 #include "providers/auth_provider.h"
 #include <cstdint>
-#include <future>
-#include <memory>
+#include <functional>
 #include <optional>
 #include <sstream>
 #include <stop_token>
@@ -43,46 +42,43 @@ class OneDriveAuthProvider : AuthProvider
     {
     }
 
-    ConnectResult connect(std::stop_token cancellation_token) override
+    StartUrl connect(std::stop_token cancellation_token,
+                     std::function<void(AuthConnectResult)> on_complete) override
     {
-        auto promise = std::make_shared<std::promise<AuthConnectResult>>();
-        auto future = promise->get_future();
         std::stop_source worker_stop;
 
-        setup_incoming_server(promise, worker_stop);
+        auto _on_complete = [&worker_stop, &on_complete](AuthConnectResult value)
+        {
+            worker_stop.request_stop();
+            on_complete(std::move(value));
+        };
+
+        setup_incoming_server(_on_complete);
 
         // Create a worker thread that listens to cancellation and holds the server.
         worker = std::jthread(
-            [this, promise, cancellation_token]()
+            [this, cancellation_token, &_on_complete]()
             {
                 std::thread monitor(
-                    [this, cancellation_token, promise]
+                    [this, cancellation_token, &_on_complete]
                     {
                         while (!cancellation_token.stop_requested())
                         {
                             std::this_thread::sleep_for(std::chrono::milliseconds(100));
                         }
 
-                        try
-                        {
-                            promise->set_value(AuthConnectResult{.status = AuthConnectStatus::Ok});
-                        }
-                        catch (...)
-                        {
-                            // TODO: Do something?
-                        }
+                        _on_complete(AuthConnectResult{.status = AuthConnectStatus::Cancelled});
                     });
 
                 server.listen("localhost", this->config.listening_server_port);
                 monitor.join();
             });
 
-        return {.start_url = create_start_url(), .future = std::move(future)};
+        return create_start_url();
     }
 
   private:
-    void setup_incoming_server(std::shared_ptr<std::promise<AuthConnectResult>>& promise,
-                               std::stop_source& worker_stop)
+    void setup_incoming_server(std::function<void(AuthConnectResult)> on_value)
     {
         server.Get("/",
                    [&](const httplib::Request& req, httplib::Response& resp)
@@ -92,9 +88,8 @@ class OneDriveAuthProvider : AuthProvider
                            auto error = req.get_param_value("error");
                            resp.set_content("Authentication failed, you can close the window.",
                                             utils::content_type_text);
-                           promise->set_value(AuthConnectResult{.status = AuthConnectStatus::Error,
-                                                                .error_msg = error});
-                           worker_stop.request_stop();
+                           on_value(AuthConnectResult{.status = AuthConnectStatus::Error,
+                                                      .error_msg = error});
                            return;
                        }
 
@@ -103,7 +98,6 @@ class OneDriveAuthProvider : AuthProvider
                            resp.status = 400;
                            resp.set_content("Missing authorization code.",
                                             utils::content_type_text);
-                           worker_stop.request_stop();
                            return;
                        }
 
@@ -112,19 +106,18 @@ class OneDriveAuthProvider : AuthProvider
                        if (!maybe_auth_info)
                        {
                            const auto* error_msg = "Unable to retrieve tokens.";
-                           promise->set_value(AuthConnectResult{.status = AuthConnectStatus::Error,
-                                                                .error_msg = error_msg});
+                           on_value(AuthConnectResult{.status = AuthConnectStatus::Error,
+                                                      .error_msg = error_msg});
                            resp.set_content(error_msg, utils::content_type_text);
                            return;
                        }
 
                        resp.set_content("Authentication finished, you can now close the window.",
                                         utils::content_type_text);
-                       promise->set_value(AuthConnectResult{
+                       on_value(AuthConnectResult{
                            .status = AuthConnectStatus::Ok,
                            .result = maybe_auth_info,
                        });
-                       worker_stop.request_stop();
                    });
     }
 
