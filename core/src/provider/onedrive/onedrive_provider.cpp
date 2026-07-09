@@ -1,10 +1,14 @@
 #include "../../utils.h"
+#include "base64.hpp"
+#include "crypto_provider.h"
 #include "entities/auth.h"
 #include "httplib.hpp"
 #include "onedrive_json.h"
 #include "providers/auth_provider.h"
+#include "random_utils.h"
 #include <cstdint>
 #include <functional>
+#include <memory>
 #include <optional>
 #include <sstream>
 #include <stop_token>
@@ -23,6 +27,7 @@ struct OneDriveConfig
 class OneDriveAuthProvider : AuthProvider
 {
     OneDriveConfig config;
+    std::unique_ptr<crypto::CryptoProvider> crypto_provider;
     httplib::Server server;
     httplib::SSLClient client;
     httplib::Headers request_headers;
@@ -30,9 +35,10 @@ class OneDriveAuthProvider : AuthProvider
     std::jthread worker;
 
   public:
-    OneDriveAuthProvider(OneDriveConfig& config)
-        : config{config}, client{config.base_url, config.port},
-          request_headers{{"Accept", "application/json"}},
+    OneDriveAuthProvider(OneDriveConfig& config,
+                         std::unique_ptr<crypto::CryptoProvider> crypto_provider)
+        : config{config}, crypto_provider{std::move(crypto_provider)},
+          client{config.base_url, config.port}, request_headers{{"Accept", "application/json"}},
           request_base_params{
               {"client_id", config.client_id},
               {"scope", "offline_access Files.Read Files.Read.All User.Read"},
@@ -144,6 +150,7 @@ class OneDriveAuthProvider : AuthProvider
     std::string create_start_url() const
     {
         auto redirect_uri = create_redirect_uri();
+        auto code_challenge = this->generate_code_challenge();
 
         std::ostringstream ss;
         ss << this->config.base_url;
@@ -154,7 +161,16 @@ class OneDriveAuthProvider : AuthProvider
         ss << "&scope="
            << utils::url_encode(
                   "offline_access Files.Read Files.Read.All User.Read openid profile email");
+        ss << "&code_challenge=" << code_challenge;
+        ss << "&code_challenge_method=S256";
         return ss.str();
+    }
+
+    std::string generate_code_challenge() const
+    {
+        auto random_code = random_utils::generate_random_string(64);
+        auto sha_code = this->crypto_provider->sha256(random_code);
+        return base64::to_base64(utils::vector_to_str(sha_code));
     }
 
     std::string create_redirect_uri() const

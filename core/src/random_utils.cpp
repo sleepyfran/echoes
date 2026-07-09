@@ -3,6 +3,8 @@
 #include <algorithm>
 #include <random>
 
+namespace random_utils
+{
 /**
  * Implementation from Harris Brakmić's Keybloack PKCE:
  * https://github.com/brakmic/keycloak-pkce-cpp/blob/main/lib/src/pkce/pkce.hpp
@@ -22,3 +24,4 @@ std::string generate_random_string(std::size_t size)
 
     return result;
 }
+} // namespace random_utils

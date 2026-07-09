@@ -7,9 +7,23 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		11952C272FFCEC0A0072101C /* CMakeLists.txt in Resources */ = {isa = PBXBuildFile; fileRef = 11952C252FFCEC0A0072101C /* CMakeLists.txt */; };
-		11952C282FFCEC0A0072101C /* greeting.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11952C232FFCEC0A0072101C /* greeting.cpp */; };
 		11952C2D2FFCEC270072101C /* GreetingBridge.mm in Sources */ = {isa = PBXBuildFile; fileRef = 11952C2B2FFCEC270072101C /* GreetingBridge.mm */; };
+		11A59BD92FFF9BFC00F7BF33 /* DependInfo.cmake in Resources */ = {isa = PBXBuildFile; fileRef = 11A59BB52FFF9BFC00F7BF33 /* DependInfo.cmake */; };
+		11A59BDA2FFF9BFC00F7BF33 /* cmake_clean.cmake in Resources */ = {isa = PBXBuildFile; fileRef = 11A59BB02FFF9BFC00F7BF33 /* cmake_clean.cmake */; };
+		11A59BDB2FFF9BFC00F7BF33 /* cmake_install.cmake in Resources */ = {isa = PBXBuildFile; fileRef = 11A59BD62FFF9BFC00F7BF33 /* cmake_install.cmake */; };
+		11A59BDC2FFF9BFC00F7BF33 /* progress.marks in Resources */ = {isa = PBXBuildFile; fileRef = 11A59BBB2FFF9BFC00F7BF33 /* progress.marks */; };
+		11A59BDD2FFF9BFC00F7BF33 /* CMakeLists.txt in Resources */ = {isa = PBXBuildFile; fileRef = 11A59BD72FFF9BFC00F7BF33 /* CMakeLists.txt */; };
+		11A59BDE2FFF9BFC00F7BF33 /* CMakeDirectoryInformation.cmake in Resources */ = {isa = PBXBuildFile; fileRef = 11A59BBA2FFF9BFC00F7BF33 /* CMakeDirectoryInformation.cmake */; };
+		11A59BDF2FFF9BFC00F7BF33 /* cmake_clean_target.cmake in Resources */ = {isa = PBXBuildFile; fileRef = 11A59BB12FFF9BFC00F7BF33 /* cmake_clean_target.cmake */; };
+		11A59BE02FFF9BFC00F7BF33 /* link.txt in Resources */ = {isa = PBXBuildFile; fileRef = 11A59BB72FFF9BFC00F7BF33 /* link.txt */; };
+		11A59BE12FFF9BFC00F7BF33 /* build.make in Sources */ = {isa = PBXBuildFile; fileRef = 11A59BAF2FFF9BFC00F7BF33 /* build.make */; };
+		11A59BE22FFF9BFC00F7BF33 /* onedrive_json.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11A59BCB2FFF9BFC00F7BF33 /* onedrive_json.cpp */; };
+		11A59BE32FFF9BFC00F7BF33 /* depend.make in Sources */ = {isa = PBXBuildFile; fileRef = 11A59BB42FFF9BFC00F7BF33 /* depend.make */; };
+		11A59BE42FFF9BFC00F7BF33 /* random.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11A59BCF2FFF9BFC00F7BF33 /* random.cpp */; };
+		11A59BE52FFF9BFC00F7BF33 /* onedrive_provider.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11A59BCC2FFF9BFC00F7BF33 /* onedrive_provider.cpp */; };
+		11A59BE62FFF9BFC00F7BF33 /* progress.make in Sources */ = {isa = PBXBuildFile; fileRef = 11A59BB82FFF9BFC00F7BF33 /* progress.make */; };
+		11A59BE72FFF9BFC00F7BF33 /* compiler_depend.make in Sources */ = {isa = PBXBuildFile; fileRef = 11A59BB22FFF9BFC00F7BF33 /* compiler_depend.make */; };
+		11A59BE82FFF9BFC00F7BF33 /* flags.make in Sources */ = {isa = PBXBuildFile; fileRef = 11A59BB62FFF9BFC00F7BF33 /* flags.make */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -33,20 +47,41 @@
 		11952BF22FFCEA710072101C /* Echoes.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Echoes.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		11952BFF2FFCEA730072101C /* EchoesTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = EchoesTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		11952C092FFCEA730072101C /* EchoesUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = EchoesUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		11952C232FFCEC0A0072101C /* greeting.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = greeting.cpp; sourceTree = "<group>"; };
-		11952C252FFCEC0A0072101C /* CMakeLists.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = CMakeLists.txt; sourceTree = "<group>"; };
 		11952C292FFCEC270072101C /* Echoes-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Echoes-Bridging-Header.h"; sourceTree = "<group>"; };
 		11952C2A2FFCEC270072101C /* GreetingBridge.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GreetingBridge.h; sourceTree = "<group>"; };
 		11952C2B2FFCEC270072101C /* GreetingBridge.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = GreetingBridge.mm; sourceTree = "<group>"; };
-		11F08FF52FFE7611000ABDD0 /* greeting.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = greeting.h; sourceTree = "<group>"; };
-		11F08FF72FFE7611000ABDD0 /* album.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = album.h; sourceTree = "<group>"; };
-		11F08FF82FFE7611000ABDD0 /* artist.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = artist.h; sourceTree = "<group>"; };
-		11F08FF92FFE7611000ABDD0 /* auth.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = auth.h; sourceTree = "<group>"; };
-		11F08FFA2FFE7611000ABDD0 /* file_system.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = file_system.h; sourceTree = "<group>"; };
-		11F08FFB2FFE7611000ABDD0 /* provider.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = provider.h; sourceTree = "<group>"; };
-		11F08FFC2FFE7611000ABDD0 /* track.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = track.h; sourceTree = "<group>"; };
-		11F08FFE2FFE7611000ABDD0 /* crypto_provider.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = crypto_provider.h; sourceTree = "<group>"; };
-		11F08FFF2FFE7611000ABDD0 /* media_provider.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = media_provider.h; sourceTree = "<group>"; };
+		11A59BAF2FFF9BFC00F7BF33 /* build.make */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.make; path = build.make; sourceTree = "<group>"; };
+		11A59BB02FFF9BFC00F7BF33 /* cmake_clean.cmake */ = {isa = PBXFileReference; lastKnownFileType = text; path = cmake_clean.cmake; sourceTree = "<group>"; };
+		11A59BB12FFF9BFC00F7BF33 /* cmake_clean_target.cmake */ = {isa = PBXFileReference; lastKnownFileType = text; path = cmake_clean_target.cmake; sourceTree = "<group>"; };
+		11A59BB22FFF9BFC00F7BF33 /* compiler_depend.make */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.make; path = compiler_depend.make; sourceTree = "<group>"; };
+		11A59BB32FFF9BFC00F7BF33 /* compiler_depend.ts */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.typescript; path = compiler_depend.ts; sourceTree = "<group>"; };
+		11A59BB42FFF9BFC00F7BF33 /* depend.make */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.make; path = depend.make; sourceTree = "<group>"; };
+		11A59BB52FFF9BFC00F7BF33 /* DependInfo.cmake */ = {isa = PBXFileReference; lastKnownFileType = text; path = DependInfo.cmake; sourceTree = "<group>"; };
+		11A59BB62FFF9BFC00F7BF33 /* flags.make */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.make; path = flags.make; sourceTree = "<group>"; };
+		11A59BB72FFF9BFC00F7BF33 /* link.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = link.txt; sourceTree = "<group>"; };
+		11A59BB82FFF9BFC00F7BF33 /* progress.make */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.make; path = progress.make; sourceTree = "<group>"; };
+		11A59BBA2FFF9BFC00F7BF33 /* CMakeDirectoryInformation.cmake */ = {isa = PBXFileReference; lastKnownFileType = text; path = CMakeDirectoryInformation.cmake; sourceTree = "<group>"; };
+		11A59BBB2FFF9BFC00F7BF33 /* progress.marks */ = {isa = PBXFileReference; lastKnownFileType = text; path = progress.marks; sourceTree = "<group>"; };
+		11A59BBD2FFF9BFC00F7BF33 /* album.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = album.h; sourceTree = "<group>"; };
+		11A59BBE2FFF9BFC00F7BF33 /* artist.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = artist.h; sourceTree = "<group>"; };
+		11A59BBF2FFF9BFC00F7BF33 /* auth.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = auth.h; sourceTree = "<group>"; };
+		11A59BC02FFF9BFC00F7BF33 /* file_system.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = file_system.h; sourceTree = "<group>"; };
+		11A59BC12FFF9BFC00F7BF33 /* provider.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = provider.h; sourceTree = "<group>"; };
+		11A59BC22FFF9BFC00F7BF33 /* track.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = track.h; sourceTree = "<group>"; };
+		11A59BC42FFF9BFC00F7BF33 /* auth_provider.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = auth_provider.h; sourceTree = "<group>"; };
+		11A59BC52FFF9BFC00F7BF33 /* media_provider.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = media_provider.h; sourceTree = "<group>"; };
+		11A59BC72FFF9BFC00F7BF33 /* crypto_provider.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = crypto_provider.h; sourceTree = "<group>"; };
+		11A59BC82FFF9BFC00F7BF33 /* random.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = random.h; sourceTree = "<group>"; };
+		11A59BCA2FFF9BFC00F7BF33 /* onedrive_json.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = onedrive_json.h; sourceTree = "<group>"; };
+		11A59BCB2FFF9BFC00F7BF33 /* onedrive_json.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = onedrive_json.cpp; sourceTree = "<group>"; };
+		11A59BCC2FFF9BFC00F7BF33 /* onedrive_provider.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = onedrive_provider.cpp; sourceTree = "<group>"; };
+		11A59BCF2FFF9BFC00F7BF33 /* random.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = random.cpp; sourceTree = "<group>"; };
+		11A59BD02FFF9BFC00F7BF33 /* utils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = utils.h; sourceTree = "<group>"; };
+		11A59BD22FFF9BFC00F7BF33 /* base64.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = base64.hpp; sourceTree = "<group>"; };
+		11A59BD32FFF9BFC00F7BF33 /* httplib.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = httplib.hpp; sourceTree = "<group>"; };
+		11A59BD42FFF9BFC00F7BF33 /* json.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = json.hpp; sourceTree = "<group>"; };
+		11A59BD62FFF9BFC00F7BF33 /* cmake_install.cmake */ = {isa = PBXFileReference; lastKnownFileType = text; path = cmake_install.cmake; sourceTree = "<group>"; };
+		11A59BD72FFF9BFC00F7BF33 /* CMakeLists.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = CMakeLists.txt; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -95,11 +130,11 @@
 		11952BE92FFCEA710072101C = {
 			isa = PBXGroup;
 			children = (
+				11A59BD82FFF9BFC00F7BF33 /* core */,
 				11952BF42FFCEA710072101C /* Echoes */,
 				11952C022FFCEA730072101C /* EchoesTests */,
 				11952C0C2FFCEA730072101C /* EchoesUITests */,
 				11952BF32FFCEA710072101C /* Products */,
-				11952C262FFCEC0A0072101C /* core */,
 				11952C2C2FFCEC270072101C /* CoreBridge */,
 			);
 			sourceTree = "<group>";
@@ -114,25 +149,6 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		11952C242FFCEC0A0072101C /* src */ = {
-			isa = PBXGroup;
-			children = (
-				11952C232FFCEC0A0072101C /* greeting.cpp */,
-			);
-			path = src;
-			sourceTree = "<group>";
-		};
-		11952C262FFCEC0A0072101C /* core */ = {
-			isa = PBXGroup;
-			children = (
-				11F090002FFE7611000ABDD0 /* include */,
-				11952C242FFCEC0A0072101C /* src */,
-				11952C252FFCEC0A0072101C /* CMakeLists.txt */,
-			);
-			name = core;
-			path = /Users/fran.gonzalez/Developer/personal/apps/echoes/core;
-			sourceTree = "<absolute>";
-		};
 		11952C2C2FFCEC270072101C /* CoreBridge */ = {
 			isa = PBXGroup;
 			children = (
@@ -144,37 +160,125 @@
 			path = ../CoreBridge;
 			sourceTree = SOURCE_ROOT;
 		};
-		11F08FF62FFE7611000ABDD0 /* echoes */ = {
+		11A59BAE2FFF9BFC00F7BF33 /* src */ = {
 			isa = PBXGroup;
 			children = (
-				11F08FF52FFE7611000ABDD0 /* greeting.h */,
 			);
-			path = echoes;
+			path = src;
 			sourceTree = "<group>";
 		};
-		11F08FFD2FFE7611000ABDD0 /* entities */ = {
+		11A59BB92FFF9BFC00F7BF33 /* echoes_core.dir */ = {
 			isa = PBXGroup;
 			children = (
-				11F08FF72FFE7611000ABDD0 /* album.h */,
-				11F08FF82FFE7611000ABDD0 /* artist.h */,
-				11F08FF92FFE7611000ABDD0 /* auth.h */,
-				11F08FFA2FFE7611000ABDD0 /* file_system.h */,
-				11F08FFB2FFE7611000ABDD0 /* provider.h */,
-				11F08FFC2FFE7611000ABDD0 /* track.h */,
+				11A59BAE2FFF9BFC00F7BF33 /* src */,
+				11A59BAF2FFF9BFC00F7BF33 /* build.make */,
+				11A59BB02FFF9BFC00F7BF33 /* cmake_clean.cmake */,
+				11A59BB12FFF9BFC00F7BF33 /* cmake_clean_target.cmake */,
+				11A59BB22FFF9BFC00F7BF33 /* compiler_depend.make */,
+				11A59BB32FFF9BFC00F7BF33 /* compiler_depend.ts */,
+				11A59BB42FFF9BFC00F7BF33 /* depend.make */,
+				11A59BB52FFF9BFC00F7BF33 /* DependInfo.cmake */,
+				11A59BB62FFF9BFC00F7BF33 /* flags.make */,
+				11A59BB72FFF9BFC00F7BF33 /* link.txt */,
+				11A59BB82FFF9BFC00F7BF33 /* progress.make */,
+			);
+			path = echoes_core.dir;
+			sourceTree = "<group>";
+		};
+		11A59BBC2FFF9BFC00F7BF33 /* CMakeFiles */ = {
+			isa = PBXGroup;
+			children = (
+				11A59BB92FFF9BFC00F7BF33 /* echoes_core.dir */,
+				11A59BBA2FFF9BFC00F7BF33 /* CMakeDirectoryInformation.cmake */,
+				11A59BBB2FFF9BFC00F7BF33 /* progress.marks */,
+			);
+			path = CMakeFiles;
+			sourceTree = "<group>";
+		};
+		11A59BC32FFF9BFC00F7BF33 /* entities */ = {
+			isa = PBXGroup;
+			children = (
+				11A59BBD2FFF9BFC00F7BF33 /* album.h */,
+				11A59BBE2FFF9BFC00F7BF33 /* artist.h */,
+				11A59BBF2FFF9BFC00F7BF33 /* auth.h */,
+				11A59BC02FFF9BFC00F7BF33 /* file_system.h */,
+				11A59BC12FFF9BFC00F7BF33 /* provider.h */,
+				11A59BC22FFF9BFC00F7BF33 /* track.h */,
 			);
 			path = entities;
 			sourceTree = "<group>";
 		};
-		11F090002FFE7611000ABDD0 /* include */ = {
+		11A59BC62FFF9BFC00F7BF33 /* providers */ = {
 			isa = PBXGroup;
 			children = (
-				11F08FF62FFE7611000ABDD0 /* echoes */,
-				11F08FFD2FFE7611000ABDD0 /* entities */,
-				11F08FFE2FFE7611000ABDD0 /* crypto_provider.h */,
-				11F08FFF2FFE7611000ABDD0 /* media_provider.h */,
+				11A59BC42FFF9BFC00F7BF33 /* auth_provider.h */,
+				11A59BC52FFF9BFC00F7BF33 /* media_provider.h */,
+			);
+			path = providers;
+			sourceTree = "<group>";
+		};
+		11A59BC92FFF9BFC00F7BF33 /* include */ = {
+			isa = PBXGroup;
+			children = (
+				11A59BC32FFF9BFC00F7BF33 /* entities */,
+				11A59BC62FFF9BFC00F7BF33 /* providers */,
+				11A59BC72FFF9BFC00F7BF33 /* crypto_provider.h */,
+				11A59BC82FFF9BFC00F7BF33 /* random.h */,
 			);
 			path = include;
 			sourceTree = "<group>";
+		};
+		11A59BCD2FFF9BFC00F7BF33 /* onedrive */ = {
+			isa = PBXGroup;
+			children = (
+				11A59BCA2FFF9BFC00F7BF33 /* onedrive_json.h */,
+				11A59BCB2FFF9BFC00F7BF33 /* onedrive_json.cpp */,
+				11A59BCC2FFF9BFC00F7BF33 /* onedrive_provider.cpp */,
+			);
+			path = onedrive;
+			sourceTree = "<group>";
+		};
+		11A59BCE2FFF9BFC00F7BF33 /* provider */ = {
+			isa = PBXGroup;
+			children = (
+				11A59BCD2FFF9BFC00F7BF33 /* onedrive */,
+			);
+			path = provider;
+			sourceTree = "<group>";
+		};
+		11A59BD12FFF9BFC00F7BF33 /* src */ = {
+			isa = PBXGroup;
+			children = (
+				11A59BCE2FFF9BFC00F7BF33 /* provider */,
+				11A59BCF2FFF9BFC00F7BF33 /* random.cpp */,
+				11A59BD02FFF9BFC00F7BF33 /* utils.h */,
+			);
+			path = src;
+			sourceTree = "<group>";
+		};
+		11A59BD52FFF9BFC00F7BF33 /* third_party */ = {
+			isa = PBXGroup;
+			children = (
+				11A59BD22FFF9BFC00F7BF33 /* base64.hpp */,
+				11A59BD32FFF9BFC00F7BF33 /* httplib.hpp */,
+				11A59BD42FFF9BFC00F7BF33 /* json.hpp */,
+			);
+			path = third_party;
+			sourceTree = "<group>";
+		};
+		11A59BD82FFF9BFC00F7BF33 /* core */ = {
+			isa = PBXGroup;
+			children = (
+				11A59BBC2FFF9BFC00F7BF33 /* CMakeFiles */,
+				11A59BC92FFF9BFC00F7BF33 /* include */,
+				11A59BD12FFF9BFC00F7BF33 /* src */,
+				11A59BD52FFF9BFC00F7BF33 /* third_party */,
+				11A59BD62FFF9BFC00F7BF33 /* cmake_install.cmake */,
+				11A59BD72FFF9BFC00F7BF33 /* CMakeLists.txt */,
+			);
+			name = core;
+			path = /Users/fran.gonzalez/Developer/personal/apps/echoes/core;
+			sourceTree = "<absolute>";
 		};
 /* End PBXGroup section */
 
@@ -297,7 +401,14 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				11952C272FFCEC0A0072101C /* CMakeLists.txt in Resources */,
+				11A59BD92FFF9BFC00F7BF33 /* DependInfo.cmake in Resources */,
+				11A59BDA2FFF9BFC00F7BF33 /* cmake_clean.cmake in Resources */,
+				11A59BDB2FFF9BFC00F7BF33 /* cmake_install.cmake in Resources */,
+				11A59BDC2FFF9BFC00F7BF33 /* progress.marks in Resources */,
+				11A59BDD2FFF9BFC00F7BF33 /* CMakeLists.txt in Resources */,
+				11A59BDE2FFF9BFC00F7BF33 /* CMakeDirectoryInformation.cmake in Resources */,
+				11A59BDF2FFF9BFC00F7BF33 /* cmake_clean_target.cmake in Resources */,
+				11A59BE02FFF9BFC00F7BF33 /* link.txt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -322,8 +433,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				11952C282FFCEC0A0072101C /* greeting.cpp in Sources */,
 				11952C2D2FFCEC270072101C /* GreetingBridge.mm in Sources */,
+				11A59BE12FFF9BFC00F7BF33 /* build.make in Sources */,
+				11A59BE22FFF9BFC00F7BF33 /* onedrive_json.cpp in Sources */,
+				11A59BE32FFF9BFC00F7BF33 /* depend.make in Sources */,
+				11A59BE42FFF9BFC00F7BF33 /* random.cpp in Sources */,
+				11A59BE52FFF9BFC00F7BF33 /* onedrive_provider.cpp in Sources */,
+				11A59BE62FFF9BFC00F7BF33 /* progress.make in Sources */,
+				11A59BE72FFF9BFC00F7BF33 /* compiler_depend.make in Sources */,
+				11A59BE82FFF9BFC00F7BF33 /* flags.make in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
