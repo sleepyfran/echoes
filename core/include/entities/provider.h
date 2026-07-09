@@ -10,7 +10,7 @@ namespace entities
 /**
  * Supported providers that can be currently used in the app.
  */
-enum ProviderId : std::int8_t
+enum class ProviderId : std::int8_t
 {
     OneDrive,
     Spotify,

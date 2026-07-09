@@ -78,13 +78,16 @@ echoes-linux-ui
 
 ## Build on macOS
 
-The macOS app is an Xcode project under `macos/` that compiles the `core`
-sources directly, so KDE / Qt are not needed.
-
-To build just the `core` library from the command line (e.g. for CI or a quick
-check), the Linux/KDE UI is disabled automatically on non-Linux platforms:
+The macOS app is an Xcode project that gets automatically created by CMake. In order to generate and open
+the project in Xcode, execute the following commands:
 
 ```bash
+cmake -G Xcode -S . -B build-macos
+open build_macos/echoes.xcodeproj
+
+# Note: If your (non-Xcode) IDE/LSP still depends on having a `build` folder with compile commands, also run:
 cmake -S . -B build
-cmake --build build
 ```
+
+Once it's opened, select `echoes_macos` as a target on the top and run the app.
+

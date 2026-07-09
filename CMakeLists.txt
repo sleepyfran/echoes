@@ -7,6 +7,11 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
+if(APPLE AND (CMAKE_GENERATOR STREQUAL "Xcode" OR CMAKE_GENERATOR MATCHES "Ninja"))
+    enable_language(Swift)
+    add_subdirectory(macos)
+endif()
+
 add_subdirectory(core)
 
 # The Kirigami/Qt UI is Linux-only. Default it ON only on Linux so that other
