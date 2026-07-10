@@ -30,7 +30,8 @@ OneDriveAuthProvider::OneDriveAuthProvider(const OneDriveConfig& config,
           {"scope", "offline_access Files.Read Files.Read.All User.Read"},
           {"redirect_uri", create_redirect_uri()},
           {"grant_type", "authorization_code"},
-      }
+      },
+      pkce_pairs(generate_pkce_pairs())
 {
 }
 
@@ -122,6 +123,7 @@ std::optional<entities::AuthInfo> OneDriveAuthProvider::retrieve_auth_info(std::
 {
     auto params = request_base_params;
     params.emplace("code", code.data());
+    params.emplace("code_verifier", pkce_pairs.code_verifier);
 
     auto res = client.Post(onedrive_token_req_endpoint, request_headers, params);
     if (!res)
@@ -140,7 +142,6 @@ std::optional<entities::AuthInfo> OneDriveAuthProvider::retrieve_auth_info(std::
 std::string OneDriveAuthProvider::create_start_url() const
 {
     auto redirect_uri = create_redirect_uri();
-    auto code_challenge = generate_code_challenge();
 
     std::ostringstream ss;
     ss << onedrive_base_url;
@@ -151,17 +152,18 @@ std::string OneDriveAuthProvider::create_start_url() const
     ss << "&scope="
        << utils::url_encode(
               "offline_access Files.Read Files.Read.All User.Read openid profile email");
-    ss << "&code_challenge=" << code_challenge;
+    ss << "&code_challenge=" << pkce_pairs.code_challenge;
     ss << "&code_challenge_method=S256";
     return ss.str();
 }
 
-std::string OneDriveAuthProvider::generate_code_challenge() const
+PkcePairs OneDriveAuthProvider::generate_pkce_pairs() const
 {
-    auto random_code = random_utils::generate_random_string(64);
-    auto sha_code = crypto_provider->sha256(random_code);
+    auto code_verifier = random_utils::generate_random_string(64);
+    auto sha_code = crypto_provider->sha256(code_verifier);
     auto encoded = base64::to_base64(utils::vector_to_str(sha_code));
 
-    // Anything over this limit would trigger a size error on the login screen.
-    return encoded.substr(0, 43);
+    return PkcePairs{.code_verifier = code_verifier,
+                     // Anything over this limit would trigger a size error on the login screen.
+                     .code_challenge = encoded.substr(0, 43)};
 }

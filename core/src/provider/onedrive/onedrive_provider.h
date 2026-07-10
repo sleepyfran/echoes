@@ -8,6 +8,12 @@
 #include <memory>
 #include <stop_token>
 
+struct PkcePairs
+{
+    std::string code_verifier;
+    std::string code_challenge;
+};
+
 class OneDriveAuthProvider : public AuthProvider
 {
   private:
@@ -18,6 +24,7 @@ class OneDriveAuthProvider : public AuthProvider
     httplib::Headers request_headers;
     httplib::Params request_base_params;
     std::jthread worker;
+    PkcePairs pkce_pairs;
 
   public:
     OneDriveAuthProvider(const OneDriveConfig& config,
@@ -29,6 +36,6 @@ class OneDriveAuthProvider : public AuthProvider
   private:
     void setup_incoming_server(std::function<void(AuthConnectResult)> on_value);
     std::optional<entities::AuthInfo> retrieve_auth_info(std::string code);
+    PkcePairs generate_pkce_pairs() const;
     std::string create_start_url() const;
-    std::string generate_code_challenge() const;
 };
