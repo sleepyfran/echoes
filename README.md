@@ -9,6 +9,15 @@ Objective-C++ bridge.
 
 Echoes is the (desktop) spiritual successor of [Echo](https://github.com/sleepyfran/echo).
 
+## Before building
+
+Make sure you create a `config.cmake` file on the root with the following format:
+```
+set(ONEDRIVE_AUTH_CLIENT_ID "your_client_id")
+```
+
+It is required by the build process to populate environment variables.
+
 ## Build on Linux
 
 ## Checks

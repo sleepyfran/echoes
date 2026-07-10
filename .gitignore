@@ -3,6 +3,9 @@ build/
 build-*/
 cmake-build-*/
 
+# CMake environment files
+config.cmake
+
 # CMake generated files
 CMakeCache.txt
 CMakeFiles/

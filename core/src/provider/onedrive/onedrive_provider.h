@@ -4,7 +4,6 @@
 #include "httplib.hpp"
 #include "providers/auth_provider.h"
 #include "providers/onedrive_config.h"
-#include <cstdint>
 #include <functional>
 #include <memory>
 #include <stop_token>
@@ -21,7 +20,7 @@ class OneDriveAuthProvider : public AuthProvider
     std::jthread worker;
 
   public:
-    OneDriveAuthProvider(OneDriveConfig& config,
+    OneDriveAuthProvider(const OneDriveConfig& config,
                          std::unique_ptr<crypto::CryptoProvider> crypto_provider);
 
     StartUrl connect(std::stop_token cancellation_token,
@@ -32,5 +31,4 @@ class OneDriveAuthProvider : public AuthProvider
     std::optional<entities::AuthInfo> retrieve_auth_info(std::string code);
     std::string create_start_url() const;
     std::string generate_code_challenge() const;
-    std::string create_redirect_uri() const;
 };

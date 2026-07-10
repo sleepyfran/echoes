@@ -1,7 +1,9 @@
 #pragma once
 
 #include "entities/auth.h"
+#include <cstdint>
 #include <functional>
+#include <optional>
 #include <stop_token>
 
 enum class AuthConnectStatus : uint8_t
@@ -23,6 +25,8 @@ struct AuthConnectResult
 };
 
 using StartUrl = std::string;
+
+constexpr const uint16_t server_listen_port = 8809;
 
 class AuthProvider
 {

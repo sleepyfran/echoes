@@ -9,6 +9,7 @@ target_include_directories(echoes_core
     PRIVATE
     	${CMAKE_CURRENT_SOURCE_DIR}/third_party
 )
+target_link_libraries(echoes_core PRIVATE app_config)
 
 find_package(OpenSSL REQUIRED)
 target_compile_definitions(echoes_core PUBLIC CPPHTTPLIB_OPENSSL_SUPPORT)

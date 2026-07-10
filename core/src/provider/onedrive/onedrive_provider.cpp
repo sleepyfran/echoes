@@ -14,10 +14,17 @@
 #include <stop_token>
 #include <thread>
 
-OneDriveAuthProvider::OneDriveAuthProvider(OneDriveConfig& config,
+std::string create_redirect_uri()
+{
+    std::stringstream ss;
+    ss << "http://localhost:" << server_listen_port << "/";
+    return ss.str();
+}
+
+OneDriveAuthProvider::OneDriveAuthProvider(const OneDriveConfig& config,
                                            std::unique_ptr<crypto::CryptoProvider> crypto_provider)
     : config{config}, crypto_provider{std::move(crypto_provider)},
-      client{config.base_url, config.port}, request_headers{{"Accept", "application/json"}},
+      client{onedrive_base_url, onedrive_port}, request_headers{{"Accept", "application/json"}},
       request_base_params{
           {"client_id", config.client_id},
           {"scope", "offline_access Files.Read Files.Read.All User.Read"},
@@ -62,7 +69,7 @@ StartUrl OneDriveAuthProvider::connect(std::stop_token cancellation_token,
                     _on_complete(AuthConnectResult{.status = AuthConnectStatus::Cancelled});
                 });
 
-            server.listen("localhost", config.listening_server_port);
+            server.listen("localhost", server_listen_port);
             monitor.join();
         });
 
@@ -116,7 +123,7 @@ std::optional<entities::AuthInfo> OneDriveAuthProvider::retrieve_auth_info(std::
     auto params = request_base_params;
     params.emplace("code", code.data());
 
-    auto res = client.Post(config.token_req_endpoint, request_headers, params);
+    auto res = client.Post(onedrive_token_req_endpoint, request_headers, params);
     if (!res)
     {
         return std::nullopt;
@@ -136,8 +143,8 @@ std::string OneDriveAuthProvider::create_start_url() const
     auto code_challenge = generate_code_challenge();
 
     std::ostringstream ss;
-    ss << config.base_url;
-    ss << config.start_endpoint;
+    ss << onedrive_base_url;
+    ss << onedrive_start_endpoint;
     ss << "?client_id=" << utils::url_encode(config.client_id);
     ss << "&response_type=code";
     ss << "&redirect_uri=" << utils::url_encode(redirect_uri);
@@ -154,11 +161,4 @@ std::string OneDriveAuthProvider::generate_code_challenge() const
     auto random_code = random_utils::generate_random_string(64);
     auto sha_code = crypto_provider->sha256(random_code);
     return base64::to_base64(utils::vector_to_str(sha_code));
-}
-
-std::string OneDriveAuthProvider::create_redirect_uri() const
-{
-    std::stringstream ss;
-    ss << "http://localhost:" << config.listening_server_port << "/";
-    return ss.str();
 }
