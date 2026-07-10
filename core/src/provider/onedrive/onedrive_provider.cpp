@@ -27,7 +27,7 @@ OneDriveAuthProvider::OneDriveAuthProvider(const OneDriveConfig& config,
       client{onedrive_host, onedrive_port}, request_headers{{"Accept", "application/json"}},
       request_base_params{
           {"client_id", config.client_id},
-          {"scope", "offline_access Files.Read Files.Read.All User.Read"},
+          {"scope", onedrive_auth_scopes},
           {"redirect_uri", create_redirect_uri()},
           {"grant_type", "authorization_code"},
       },
@@ -149,9 +149,7 @@ std::string OneDriveAuthProvider::create_start_url() const
     ss << "?client_id=" << utils::url_encode(config.client_id);
     ss << "&response_type=code";
     ss << "&redirect_uri=" << utils::url_encode(redirect_uri);
-    ss << "&scope="
-       << utils::url_encode(
-              "offline_access Files.Read Files.Read.All User.Read openid profile email");
+    ss << "&scope=" << utils::url_encode(onedrive_auth_scopes);
     ss << "&code_challenge=" << pkce_pairs.code_challenge;
     ss << "&code_challenge_method=S256";
     return ss.str();
@@ -161,9 +159,7 @@ PkcePairs OneDriveAuthProvider::generate_pkce_pairs() const
 {
     auto code_verifier = random_utils::generate_random_string(64);
     auto sha_code = crypto_provider->sha256(code_verifier);
-    auto encoded = base64::to_base64(utils::vector_to_str(sha_code));
+    auto code_challenge = utils::base64_url_encode(base64::to_base64(utils::vector_to_str(sha_code)));
 
-    return PkcePairs{.code_verifier = code_verifier,
-                     // Anything over this limit would trigger a size error on the login screen.
-                     .code_challenge = encoded.substr(0, 43)};
+    return PkcePairs{.code_verifier = code_verifier, .code_challenge = code_challenge};
 }

@@ -1,5 +1,6 @@
 #pragma once
 
+#include <algorithm>
 #include <cctype>
 #include <cstdint>
 #include <iomanip>
@@ -32,6 +33,22 @@ inline std::string url_encode(std::string_view value)
     }
 
     return encoded.str();
+}
+
+/**
+ * Converts regular base64 output to the unpadded base64url format used by PKCE.
+ */
+inline std::string base64_url_encode(std::string encoded)
+{
+    std::ranges::replace(encoded, '+', '-');
+    std::ranges::replace(encoded, '/', '_');
+
+    while (!encoded.empty() && encoded.back() == '=')
+    {
+        encoded.pop_back();
+    }
+
+    return encoded;
 }
 
 /**
