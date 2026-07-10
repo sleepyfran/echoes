@@ -160,5 +160,8 @@ std::string OneDriveAuthProvider::generate_code_challenge() const
 {
     auto random_code = random_utils::generate_random_string(64);
     auto sha_code = crypto_provider->sha256(random_code);
-    return base64::to_base64(utils::vector_to_str(sha_code));
+    auto encoded = base64::to_base64(utils::vector_to_str(sha_code));
+
+    // Anything over this limit would trigger a size error on the login screen.
+    return encoded.substr(0, 43);
 }
