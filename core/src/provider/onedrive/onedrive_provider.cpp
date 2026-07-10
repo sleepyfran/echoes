@@ -24,7 +24,7 @@ std::string create_redirect_uri()
 OneDriveAuthProvider::OneDriveAuthProvider(const OneDriveConfig& config,
                                            std::unique_ptr<crypto::CryptoProvider> crypto_provider)
     : config{config}, crypto_provider{std::move(crypto_provider)},
-      client{onedrive_base_url, onedrive_port}, request_headers{{"Accept", "application/json"}},
+      client{onedrive_host, onedrive_port}, request_headers{{"Accept", "application/json"}},
       request_base_params{
           {"client_id", config.client_id},
           {"scope", "offline_access Files.Read Files.Read.All User.Read"},
