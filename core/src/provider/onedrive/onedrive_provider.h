@@ -1,11 +1,11 @@
 #pragma once
 
+#include "auth_store.h"
 #include "crypto_provider.h"
 #include "httplib.hpp"
 #include "providers/auth_provider.h"
 #include "providers/onedrive_config.h"
 #include <functional>
-#include <memory>
 #include <stop_token>
 
 struct PkcePairs
@@ -18,7 +18,8 @@ class OneDriveAuthProvider : public AuthProvider
 {
   private:
     OneDriveConfig config;
-    std::unique_ptr<crypto::CryptoProvider> crypto_provider;
+    const crypto::CryptoProvider* crypto_provider;
+    const AuthStore* auth_store;
     httplib::Server server;
     httplib::SSLClient client;
     httplib::Headers request_headers;
@@ -28,7 +29,8 @@ class OneDriveAuthProvider : public AuthProvider
 
   public:
     OneDriveAuthProvider(const OneDriveConfig& config,
-                         std::unique_ptr<crypto::CryptoProvider> crypto_provider);
+                         const crypto::CryptoProvider* crypto_provider,
+                         const AuthStore* auth_store);
 
     StartUrl connect(std::stop_token cancellation_token,
                      std::function<void(AuthConnectResult)> on_complete) override;

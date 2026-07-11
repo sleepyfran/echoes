@@ -10,12 +10,14 @@ include(KDECMakeSettings)
 include(KDECompilerSettings NO_POLICY_SCOPE)
 
 find_package(Qt6 REQUIRED COMPONENTS Core Gui Qml Quick)
-find_package(KF6 REQUIRED COMPONENTS I18n Kirigami)
+find_package(KF6 REQUIRED COMPONENTS I18n Kirigami Wallet)
 
 qt_policy(SET QTP0001 NEW)
 
+file(GLOB_RECURSE SOURCES CONFIGURE_DEPENDS "src/*.cpp")
+
 qt_add_executable(echoes-linux-ui
-    src/main.cpp
+    ${SOURCES}
 )
 
 qt_add_qml_module(echoes-linux-ui
@@ -33,6 +35,7 @@ target_link_libraries(echoes-linux-ui
         Qt6::Quick
         KF6::I18n
         KF6::Kirigami
+	KF6::Wallet
         echoes::core
 )
 

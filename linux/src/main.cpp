@@ -9,30 +9,26 @@
 #include <KLocalizedContext>
 #include <KLocalizedString>
 
-#include "crypto_provider.h"
+#include "auth_store.h"
 #include "entities/provider.h"
+#include "openssl_crypto_provider.h"
 #include "providers/provider_factory.h"
+#include "wallet_auth_store.h"
 
 #include <memory>
-#include <openssl/sha.h>
+#include <qguiapplication.h>
+#include <qwindowdefs.h>
 #include <stop_token>
-
-class LinuxCryptoProvider final : public crypto::CryptoProvider
-{
-  public:
-    std::vector<uint8_t> sha256(std::string_view input) override
-    {
-        std::vector<uint8_t> hash(SHA256_DIGEST_LENGTH);
-        SHA256(reinterpret_cast<const unsigned char*>(input.data()), input.size(), hash.data());
-        return hash;
-    }
-};
 
 class ProviderBridge final : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(bool isAuthenticating READ isAuthenticating NOTIFY isAuthenticatingChanged)
     Q_PROPERTY(QString authErrorMessage READ authErrorMessage NOTIFY authErrorMessageChanged)
+
+    std::unique_ptr<crypto::CryptoProvider> crypto_provider =
+        std::make_unique<OpenSSLCryptoProvider>();
+    std::unique_ptr<AuthStore> auth_store = std::make_unique<wallet::WalletAuthStore>();
 
   public:
     explicit ProviderBridge(QObject* parent = nullptr) : QObject(parent) {}
@@ -42,11 +38,11 @@ class ProviderBridge final : public QObject
         activeAuthStopSource.request_stop();
     }
 
-    bool isAuthenticating() const
+    [[nodiscard]] bool isAuthenticating() const
     {
         return m_isAuthenticating;
     }
-    QString authErrorMessage() const
+    [[nodiscard]] QString authErrorMessage() const
     {
         return m_authErrorMessage;
     }
@@ -62,12 +58,12 @@ class ProviderBridge final : public QObject
         setAuthErrorMessage({});
 
         providers::GlobalDependencies deps{
-            .crypto_provider = std::make_unique<LinuxCryptoProvider>(),
+            .crypto_provider = crypto_provider.get(),
+            .auth_store = auth_store.get(),
         };
 
         activeAuthStopSource = std::stop_source();
-        activeAuthProvider =
-            providers::create_auth_provider(entities::ProviderId::OneDrive, std::move(deps));
+        activeAuthProvider = providers::create_auth_provider(entities::ProviderId::OneDrive, deps);
 
         auto startUrl = activeAuthProvider->connect(
             activeAuthStopSource.get_token(),
