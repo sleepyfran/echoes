@@ -1,4 +1,5 @@
 #include <QDesktopServices>
+#include <QClipboard>
 #include <QGuiApplication>
 #include <QObject>
 #include <QQmlApplicationEngine>
@@ -25,6 +26,7 @@ class ProviderBridge final : public QObject
     Q_OBJECT
     Q_PROPERTY(bool isAuthenticating READ isAuthenticating NOTIFY isAuthenticatingChanged)
     Q_PROPERTY(QString authErrorMessage READ authErrorMessage NOTIFY authErrorMessageChanged)
+    Q_PROPERTY(QString authStartUrl READ authStartUrl NOTIFY authStartUrlChanged)
 
     std::unique_ptr<crypto::CryptoProvider> crypto_provider =
         std::make_unique<OpenSSLCryptoProvider>();
@@ -46,6 +48,10 @@ class ProviderBridge final : public QObject
     {
         return m_authErrorMessage;
     }
+    [[nodiscard]] QString authStartUrl() const
+    {
+        return m_authStartUrl;
+    }
 
     Q_INVOKABLE void startAuthentication()
     {
@@ -56,6 +62,7 @@ class ProviderBridge final : public QObject
 
         setIsAuthenticating(true);
         setAuthErrorMessage({});
+        setAuthStartUrl({});
 
         providers::GlobalDependencies deps{
             .crypto_provider = crypto_provider.get(),
@@ -84,6 +91,8 @@ class ProviderBridge final : public QObject
                     Qt::QueuedConnection);
             });
 
+        setAuthStartUrl(QString::fromStdString(startUrl));
+
         if (!QDesktopServices::openUrl(QUrl(QString::fromStdString(startUrl))))
         {
             activeAuthStopSource.request_stop();
@@ -92,9 +101,15 @@ class ProviderBridge final : public QObject
         }
     }
 
+    Q_INVOKABLE void copyAuthenticationUrl() const
+    {
+        QGuiApplication::clipboard()->setText(m_authStartUrl);
+    }
+
   Q_SIGNALS:
     void isAuthenticatingChanged();
     void authErrorMessageChanged();
+    void authStartUrlChanged();
 
   private:
     void setIsAuthenticating(bool isAuthenticating)
@@ -119,10 +134,22 @@ class ProviderBridge final : public QObject
         Q_EMIT authErrorMessageChanged();
     }
 
+    void setAuthStartUrl(const QString& authStartUrl)
+    {
+        if (m_authStartUrl == authStartUrl)
+        {
+            return;
+        }
+
+        m_authStartUrl = authStartUrl;
+        Q_EMIT authStartUrlChanged();
+    }
+
     std::unique_ptr<AuthProvider> activeAuthProvider;
     std::stop_source activeAuthStopSource;
     bool m_isAuthenticating = false;
     QString m_authErrorMessage;
+    QString m_authStartUrl;
 };
 
 int main(int argc, char* argv[])

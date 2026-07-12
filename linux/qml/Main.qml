@@ -43,6 +43,34 @@ Kirigami.ApplicationWindow {
             Controls.Label {
                 Layout.alignment: Qt.AlignHCenter
                 Layout.maximumWidth: parent.width
+                horizontalAlignment: Text.AlignHCenter
+                text: i18nc("@info", "If your browser doesn't open, copy this link and open it manually:")
+                visible: authBridge.isAuthenticating && authBridge.authStartUrl.length > 0
+                wrapMode: Text.WordWrap
+            }
+
+            Controls.Label {
+                id: authenticationUrl
+
+                Layout.alignment: Qt.AlignHCenter
+                Layout.maximumWidth: parent.width
+                color: Kirigami.Theme.linkColor
+                font.underline: true
+                horizontalAlignment: Text.AlignHCenter
+                text: authBridge.authStartUrl
+                visible: authBridge.isAuthenticating && text.length > 0
+                wrapMode: Text.WrapAnywhere
+
+                MouseArea {
+                    anchors.fill: parent
+                    cursorShape: Qt.PointingHandCursor
+                    onClicked: authBridge.copyAuthenticationUrl()
+                }
+            }
+
+            Controls.Label {
+                Layout.alignment: Qt.AlignHCenter
+                Layout.maximumWidth: parent.width
                 color: Kirigami.Theme.negativeTextColor
                 horizontalAlignment: Text.AlignHCenter
                 text: authBridge.authErrorMessage
