@@ -16,7 +16,9 @@ fs::path get_config_directory()
     // Windows: %APPDATA%.
     auto* env_var = std::getenv("APPDATA");
     if (env_var)
-        return fs::path(env_var);
+    {
+        return {env_var};
+    }
 #elif defined(__APPLE__)
     // macOS: ~/Library/Application Support.
     const char* home = std::getenv("HOME");
@@ -29,7 +31,7 @@ fs::path get_config_directory()
     auto* env_var = std::getenv("XDG_CONFIG_HOME");
     if (env_var)
     {
-        return fs::path(env_var);
+        return {env_var};
     }
 
     const char* home = std::getenv("HOME");
