@@ -1,5 +1,5 @@
-#include <QDesktopServices>
 #include <QClipboard>
+#include <QDesktopServices>
 #include <QGuiApplication>
 #include <QObject>
 #include <QQmlApplicationEngine>
@@ -12,7 +12,6 @@
 
 #include "auth_store.h"
 #include "entities/provider.h"
-#include "openssl_crypto_provider.h"
 #include "providers/provider_factory.h"
 #include "wallet_auth_store.h"
 
@@ -28,8 +27,6 @@ class ProviderBridge final : public QObject
     Q_PROPERTY(QString authErrorMessage READ authErrorMessage NOTIFY authErrorMessageChanged)
     Q_PROPERTY(QString authStartUrl READ authStartUrl NOTIFY authStartUrlChanged)
 
-    std::unique_ptr<crypto::CryptoProvider> crypto_provider =
-        std::make_unique<OpenSSLCryptoProvider>();
     std::unique_ptr<AuthStore> auth_store = std::make_unique<wallet::WalletAuthStore>();
 
   public:
@@ -65,7 +62,6 @@ class ProviderBridge final : public QObject
         setAuthStartUrl({});
 
         providers::GlobalDependencies deps{
-            .crypto_provider = crypto_provider.get(),
             .auth_store = auth_store.get(),
         };
 

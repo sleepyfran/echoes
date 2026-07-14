@@ -1,7 +1,6 @@
 #include "login.h"
 
 #include "../in_memory_auth_store.h"
-#include "../openssl_crypto_provider.h"
 #include "providers/provider_factory.h"
 
 #include <future>
@@ -32,11 +31,9 @@ int handle_login_command(const Args& args)
         return 1;
     }
 
-    OpenSSLCryptoProvider crypto_provider;
     InMemoryAuthStore auth_store;
     auto auth_provider = providers::create_auth_provider(entities::ProviderId::OneDrive,
                                                          providers::GlobalDependencies{
-                                                             .crypto_provider = &crypto_provider,
                                                              .auth_store = &auth_store,
                                                          });
 
@@ -44,13 +41,12 @@ int handle_login_command(const Args& args)
     auto completion_future = completion_promise.get_future();
     std::stop_source cancellation;
 
-    const auto start_url =
-        auth_provider->connect(cancellation.get_token(),
-                               [&](AuthConnectResult result)
-                               {
-                                   completion_promise.set_value(std::move(result));
-                                   cancellation.request_stop();
-                               });
+    const auto start_url = auth_provider->connect(cancellation.get_token(),
+                                                  [&](const AuthConnectResult& result)
+                                                  {
+                                                      completion_promise.set_value(result);
+                                                      cancellation.request_stop();
+                                                  });
 
     std::cout << "Open this URL in your browser to sign in:\n" << start_url << '\n';
 

@@ -16,7 +16,7 @@ std::unique_ptr<AuthProvider> create_auth_provider(entities::ProviderId id, Glob
             OneDriveConfig{
                 .client_id = ONEDRIVE_AUTH_CLIENT_ID,
             },
-            deps.crypto_provider, deps.auth_store);
+            deps.auth_store);
     }
     default:
         std::abort();

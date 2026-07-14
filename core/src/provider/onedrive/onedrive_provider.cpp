@@ -2,6 +2,7 @@
 #include "../../utils.h"
 #include "auth_store.h"
 #include "base64.hpp"
+#include "crypto_hash.h"
 #include "entities/auth.h"
 #include "httplib.hpp"
 #include "onedrive_json.h"
@@ -22,11 +23,20 @@ std::string create_redirect_uri()
     return ss.str();
 }
 
+PkcePairs generate_pkce_pairs()
+{
+    auto code_verifier = random_utils::generate_random_string(64);
+    auto sha_code = crypto::sha256(code_verifier);
+    auto code_challenge =
+        utils::base64_url_encode(base64::to_base64(utils::vector_to_str(sha_code)));
+
+    return PkcePairs{.code_verifier = code_verifier, .code_challenge = code_challenge};
+}
+
 OneDriveAuthProvider::OneDriveAuthProvider(const OneDriveConfig& config,
-                                           const crypto::CryptoProvider* crypto_provider,
                                            const AuthStore* auth_store)
-    : config{config}, crypto_provider{crypto_provider}, auth_store{auth_store},
-      client{onedrive_host, onedrive_port}, request_headers{{"Accept", "application/json"}},
+    : config{config}, auth_store{auth_store}, client{onedrive_host, onedrive_port},
+      request_headers{{"Accept", "application/json"}},
       request_base_params{
           {"client_id", config.client_id},
           {"scope", onedrive_auth_scopes},
@@ -159,14 +169,4 @@ std::string OneDriveAuthProvider::create_start_url() const
     ss << "&code_challenge=" << pkce_pairs.code_challenge;
     ss << "&code_challenge_method=S256";
     return ss.str();
-}
-
-PkcePairs OneDriveAuthProvider::generate_pkce_pairs() const
-{
-    auto code_verifier = random_utils::generate_random_string(64);
-    auto sha_code = crypto_provider->sha256(code_verifier);
-    auto code_challenge =
-        utils::base64_url_encode(base64::to_base64(utils::vector_to_str(sha_code)));
-
-    return PkcePairs{.code_verifier = code_verifier, .code_challenge = code_challenge};
 }

@@ -1,7 +1,6 @@
 #pragma once
 
 #include "auth_store.h"
-#include "crypto_provider.h"
 #include "entities/provider.h"
 #include "providers/auth_provider.h"
 #include <memory>
@@ -14,7 +13,6 @@ namespace providers
  */
 struct GlobalDependencies
 {
-    crypto::CryptoProvider* crypto_provider;
     AuthStore* auth_store;
 };
 

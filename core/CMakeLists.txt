@@ -19,6 +19,14 @@ target_link_libraries(echoes_core
         OpenSSL::Crypto
 )
 
+if(APPLE)
+    target_link_libraries(echoes_core 
+        PRIVATE 
+        "-framework CoreFoundation" 
+        "-framework Security"
+    )
+endif()
+
 set_target_properties(echoes_core PROPERTIES
     XCODE_ATTRIBUTE_GCC_OPTIMIZATION_LEVEL[variant=Debug] "0"
 )

@@ -1,5 +1,4 @@
 #include "ProviderBridge.h"
-#include "MacOsCryptoProvider.h"
 #include "entities/provider.h"
 #include "providers/provider_factory.h"
 #include <memory>
@@ -26,12 +25,10 @@ static entities::ProviderId ToProviderId(ProviderIdBridge provider_id) {
 
 + (NSString *)start_authentication:(ProviderIdBridge)provider_id
                         completion:(ProviderAuthCompletion)completion {
-  providers::GlobalDependencies deps{
-      .crypto_provider = std::make_unique<MacOsCryptoProvider>(),
-  };
+  providers::GlobalDependencies deps{};
 
-  s_active_auth_provider = providers::create_auth_provider(
-      ToProviderId(provider_id), std::move(deps));
+  s_active_auth_provider =
+      providers::create_auth_provider(ToProviderId(provider_id), deps);
   s_active_auth_stop_source = std::stop_source();
 
   // Blocks must be copied to escape the scope they were declared in.
