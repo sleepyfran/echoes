@@ -1,5 +1,6 @@
 #pragma once
 
+#include <array>
 #include <cstdint>
 #include <ctime>
 #include <variant>
@@ -15,6 +16,11 @@ enum class ProviderId : std::int8_t
     OneDrive,
     Spotify,
 };
+
+/**
+ * Gathers all available providers in the app.
+ */
+constexpr std::array<ProviderId, 2> AllProviderIds = {ProviderId::OneDrive, ProviderId::Spotify};
 
 /**
  * Whether the means of interaction with a provider is via a file system (OneDrive, Google Drive,

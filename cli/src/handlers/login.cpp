@@ -1,10 +1,13 @@
 #include "login.h"
 
-#include "../in_memory_auth_store.h"
+#include "auth_store.h"
+#include "entities/provider.h"
 #include "providers/provider_factory.h"
 
+#include <ctime>
 #include <future>
 #include <iostream>
+#include <optional>
 #include <stop_token>
 
 namespace
@@ -17,7 +20,22 @@ void print_usage()
 
 } // namespace
 
-int handle_login_command(const Args& args)
+std::optional<entities::ProviderId> provider_from_string(std::string_view input)
+{
+    if (input == "onedrive")
+    {
+        return entities::ProviderId::OneDrive;
+    }
+
+    if (input == "spotify")
+    {
+        return entities::ProviderId::Spotify;
+    }
+
+    return std::nullopt;
+}
+
+int handle_login_command(AuthStore& store, const Args& args)
 {
     if (!args.flags.empty() || args.positional.size() != 2)
     {
@@ -25,17 +43,26 @@ int handle_login_command(const Args& args)
         return 1;
     }
 
-    if (args.positional[1] != "onedrive")
+    auto provider_id_str = args.positional[1];
+    auto provider_id = provider_from_string(provider_id_str);
+    if (provider_id == std::nullopt)
     {
-        std::cerr << "Unsupported provider: " << args.positional[1] << '\n';
+        std::cerr << "Unsupported provider: " << provider_id_str << '\n';
         return 1;
     }
 
-    InMemoryAuthStore auth_store;
-    auto auth_provider = providers::create_auth_provider(entities::ProviderId::OneDrive,
-                                                         providers::GlobalDependencies{
-                                                             .auth_store = &auth_store,
-                                                         });
+    auto existing_auth_info = store.retrieve(provider_id.value());
+    if (existing_auth_info.has_value() &&
+        existing_auth_info.value().expires_on > std::time(nullptr))
+    {
+        std::cout << "You're already logged into " << provider_id_str << '\n';
+        return 0;
+    }
+
+    auto auth_provider =
+        providers::create_auth_provider(provider_id.value(), providers::GlobalDependencies{
+                                                                 .auth_store = &store,
+                                                             });
 
     std::promise<AuthConnectResult> completion_promise;
     auto completion_future = completion_promise.get_future();
