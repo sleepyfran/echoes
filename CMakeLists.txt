@@ -24,6 +24,7 @@ if(APPLE AND (CMAKE_GENERATOR STREQUAL "Xcode" OR CMAKE_GENERATOR MATCHES "Ninja
 endif()
 
 add_subdirectory(core)
+add_subdirectory(cli)
 
 # The Kirigami/Qt UI is Linux-only. Default it ON only on Linux so that other
 # platforms (e.g. macOS, where the UI lives in a native Xcode project) build
@@ -39,4 +40,3 @@ if(ECHOES_BUILD_LINUX_UI)
     set(KDE_INSTALL_PREFIX_SCRIPT ON CACHE BOOL "Generate prefix.sh for kde-builder runtime setup")
     add_subdirectory(linux)
 endif()
-

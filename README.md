@@ -100,3 +100,13 @@ cmake -S . -B build
 
 Once it's opened, select `echoes_macos` as a target on the top and run the app.
 
+## CLI
+
+There's also a portable CLI for testing purposes. This one is not meant to be the actual product but a quick way of interacting
+with the application core functionality:
+
+```bash
+cmake -S . -B build-cli -DECHOES_BUILD_LINUX_UI=OFF
+cmake --build build-cli
+./build-cli/cli/echoes-cli
+```
