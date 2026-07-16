@@ -11,6 +11,7 @@
 namespace utils
 {
 constexpr const char* content_type_text = "text/plain";
+constexpr const char* content_type_json = "application/json";
 
 /**
  * Encodes a URL to make it safe to be used in URLs per the RFC 3986 standard.

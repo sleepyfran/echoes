@@ -1,13 +1,13 @@
-#include "onedrive_provider.h"
-#include "../../utils.h"
 #include "auth_store.h"
 #include "base64.hpp"
 #include "crypto_hash.h"
 #include "entities/auth.h"
 #include "httplib.hpp"
 #include "onedrive_json.h"
+#include "onedrive_provider.h"
 #include "providers/auth_provider.h"
 #include "random_utils.h"
+#include "utils.h"
 #include <atomic>
 #include <functional>
 #include <memory>
@@ -35,7 +35,7 @@ PkcePairs generate_pkce_pairs()
 
 OneDriveAuthProvider::OneDriveAuthProvider(const OneDriveConfig& config,
                                            const AuthStore* auth_store)
-    : config{config}, auth_store{auth_store}, client{onedrive_host, onedrive_port},
+    : config{config}, auth_store{auth_store}, client{onedrive_auth_host, onedrive_port},
       request_headers{{"Accept", "application/json"}},
       request_base_params{
           {"client_id", config.client_id},
@@ -160,7 +160,7 @@ std::string OneDriveAuthProvider::create_start_url() const
     auto redirect_uri = create_redirect_uri();
 
     std::ostringstream ss;
-    ss << onedrive_base_url;
+    ss << onedrive_auth_start_base_url;
     ss << onedrive_start_endpoint;
     ss << "?client_id=" << utils::url_encode(config.client_id);
     ss << "&response_type=code";

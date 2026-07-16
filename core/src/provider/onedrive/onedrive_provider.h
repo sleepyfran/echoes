@@ -1,8 +1,10 @@
 #pragma once
 
 #include "auth_store.h"
+#include "entities/file_system.h"
 #include "httplib.hpp"
 #include "providers/auth_provider.h"
+#include "providers/media_provider.h"
 #include "providers/onedrive_config.h"
 #include <functional>
 #include <stop_token>
@@ -36,3 +38,20 @@ class OneDriveAuthProvider : public AuthProvider
     std::optional<entities::AuthInfo> retrieve_auth_info(std::string code);
     std::string create_start_url() const;
 };
+
+namespace media_provider
+{
+class OneDriveMediaProvider : public FileBasedProvider
+{
+  private:
+    AuthStore* auth_store;
+    httplib::SSLClient client;
+    httplib::Headers base_headers;
+
+  public:
+    OneDriveMediaProvider(AuthStore* auth_store);
+    FolderContentResult list_root() override;
+    FolderContentResult list_folder(entities::FolderMetadata& folder) override;
+    UrlResult file_url_by_id(entities::ItemId& id) override;
+};
+} // namespace media_provider

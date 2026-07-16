@@ -11,6 +11,10 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
+if(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+    add_compile_options(-Wno-c99-designator)
+endif()
+
 # Load the configuration from the `config.cmake` variables.
 add_library(app_config INTERFACE)
 target_compile_definitions(app_config INTERFACE

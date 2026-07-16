@@ -20,21 +20,6 @@ void print_usage()
 
 } // namespace
 
-std::optional<entities::ProviderId> provider_from_string(std::string_view input)
-{
-    if (input == "onedrive")
-    {
-        return entities::ProviderId::OneDrive;
-    }
-
-    if (input == "spotify")
-    {
-        return entities::ProviderId::Spotify;
-    }
-
-    return std::nullopt;
-}
-
 int handle_login_command(AuthStore& store, const Args& args)
 {
     if (!args.flags.empty() || args.positional.size() != 2)
@@ -44,7 +29,7 @@ int handle_login_command(AuthStore& store, const Args& args)
     }
 
     auto provider_id_str = args.positional[1];
-    auto provider_id = provider_from_string(provider_id_str);
+    auto provider_id = entities::provider_from_string(provider_id_str);
     if (provider_id == std::nullopt)
     {
         std::cerr << "Unsupported provider: " << provider_id_str << '\n';
@@ -81,7 +66,7 @@ int handle_login_command(AuthStore& store, const Args& args)
 
     if (result.status == AuthConnectStatus::Ok)
     {
-        std::cout << "Login completed.\n";
+        std::cout << "Login completed. You can now use " << provider_id_str << " as a provider.\n";
         return 0;
     }
 

@@ -3,6 +3,7 @@
 #include <array>
 #include <cstdint>
 #include <ctime>
+#include <string_view>
 #include <variant>
 
 namespace entities
@@ -16,6 +17,25 @@ enum class ProviderId : std::int8_t
     OneDrive,
     Spotify,
 };
+
+/**
+ * Returns the string representation of the given provider ID. This representation is not meant to
+ * be displayed directly to the user, but rather just for parsing purposes and other internal usage.
+ */
+inline std::optional<entities::ProviderId> provider_from_string(std::string_view input)
+{
+    if (input == "onedrive")
+    {
+        return entities::ProviderId::OneDrive;
+    }
+
+    if (input == "spotify")
+    {
+        return entities::ProviderId::Spotify;
+    }
+
+    return std::nullopt;
+}
 
 /**
  * Gathers all available providers in the app.

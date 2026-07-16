@@ -1,14 +1,10 @@
 #include "handlers/args.h"
 #include "handlers/login.h"
+#include "handlers/setup.h"
 #include "unsafe_file_auth_store.h"
 #include <iostream>
 #include <span>
 #include <string_view>
-
-void print_usage(std::string_view executable_name)
-{
-    std::cerr << "Usage: " << executable_name << " login onedrive\n";
-}
 
 Args parse_args(std::span<char*> argv)
 {
@@ -39,6 +35,22 @@ Args parse_args(std::span<char*> argv)
     return args;
 }
 
+int handle_command(AuthStore& auth_store, const Args& args)
+{
+    const auto command = args.positional[0];
+    if (command == "login")
+    {
+        return handle_login_command(auth_store, args);
+    }
+
+    if (command == "setup")
+    {
+        return handle_setup(auth_store, args);
+    }
+
+    return 1;
+}
+
 int main(int argc, char* argv[])
 {
     UnsafeFileAuthStore auth_store;
@@ -53,12 +65,12 @@ int main(int argc, char* argv[])
 
     const std::string_view executable_name = argc > 0 ? argv[0] : "echoes-cli";
 
-    const Args args = parse_args(std::span(argv, argc));
-    if (!args.positional.empty() && args.positional[0] == "login")
+    // Skip the first element since we've already gathered the executable name.
+    const Args args = parse_args(std::span(argv + 1, argc - 1));
+    if (args.positional.empty())
     {
-        return handle_login_command(auth_store, args);
+        return 1;
     }
 
-    print_usage(executable_name);
-    return 1;
+    return handle_command(auth_store, args);
 }
