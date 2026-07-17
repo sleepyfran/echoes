@@ -24,7 +24,6 @@ struct MsalSpecificAuthInfo
  */
 struct SpotifySpecificAuthInfo
 {
-    std::string refresh_token;
 };
 
 /**
@@ -34,6 +33,7 @@ struct AuthInfo
 {
     ProviderId provider_id;
     std::string access_token;
+    std::string refresh_token;
     std::variant<MsalSpecificAuthInfo, SpotifySpecificAuthInfo> provider_specific_auth_info;
     std::time_t expires_on;
 };

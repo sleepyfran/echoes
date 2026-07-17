@@ -95,6 +95,7 @@ void save_provider(const entities::AuthInfo& info)
     std::ofstream os(path, std::ios::binary);
 
     save_string(os, info.access_token);
+    save_string(os, info.refresh_token);
     save_long(os, info.expires_on);
 
     std::visit(
@@ -112,7 +113,6 @@ void save_provider(const entities::AuthInfo& info)
             }
             else if constexpr (std::is_same_v<T, entities::SpotifySpecificAuthInfo>)
             {
-                save_string(os, provider_info.refresh_token);
             }
         },
         info.provider_specific_auth_info);
@@ -157,6 +157,7 @@ std::optional<entities::AuthInfo> load_from_file_for_provider(entities::Provider
     info.provider_id = provider_id;
 
     info.access_token = load_string(is);
+    info.refresh_token = load_string(is);
     info.expires_on = load_long(is);
 
     if (provider_id == entities::ProviderId::OneDrive)
@@ -173,8 +174,6 @@ std::optional<entities::AuthInfo> load_from_file_for_provider(entities::Provider
     else if (provider_id == entities::ProviderId::Spotify)
     {
         entities::SpotifySpecificAuthInfo spotify;
-        spotify.refresh_token = load_string(is);
-
         info.provider_specific_auth_info = spotify;
     }
 

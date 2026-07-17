@@ -32,10 +32,13 @@ class OneDriveAuthProvider : public AuthProvider
 
     StartUrl connect(std::stop_token cancellation_token,
                      std::function<void(AuthConnectResult)> on_complete) override;
+    void refresh(const entities::AuthInfo& original_auth_info, std::stop_token cancellation_token,
+                 std::function<void(AuthConnectResult)> on_complete) override;
 
   private:
     void setup_incoming_server(std::function<void(AuthConnectResult)> on_value);
-    std::optional<entities::AuthInfo> retrieve_auth_info(std::string code);
+    std::optional<entities::AuthInfo> retrieve_auth_info(std::string_view code);
+    std::optional<entities::AuthInfo> retrieve_refreshed_auth_info(std::string_view refresh_token);
     std::string create_start_url() const;
 };
 

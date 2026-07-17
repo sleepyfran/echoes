@@ -41,7 +41,6 @@ OneDriveAuthProvider::OneDriveAuthProvider(const OneDriveConfig& config,
           {"client_id", config.client_id},
           {"scope", onedrive_auth_scopes},
           {"redirect_uri", create_redirect_uri()},
-          {"grant_type", "authorization_code"},
       },
       pkce_pairs(generate_pkce_pairs())
 {
@@ -75,22 +74,58 @@ StartUrl OneDriveAuthProvider::connect(std::stop_token cancellation_token,
     worker = std::jthread(
         [this, cancellation_token, _on_complete]() mutable
         {
-            std::thread monitor(
-                [cancellation_token, _on_complete]() mutable
-                {
-                    while (!cancellation_token.stop_requested())
-                    {
-                        std::this_thread::sleep_for(std::chrono::milliseconds(100));
-                    }
-
-                    _on_complete(AuthConnectResult{.status = AuthConnectStatus::Cancelled});
-                });
+            std::stop_callback on_cancel(
+                cancellation_token, [_on_complete]() mutable
+                { _on_complete(AuthConnectResult{.status = AuthConnectStatus::Cancelled}); });
 
             server.listen("localhost", server_listen_port);
-            monitor.join();
         });
 
     return create_start_url();
+}
+
+void OneDriveAuthProvider::refresh(const entities::AuthInfo& original_auth_info,
+                                   std::stop_token cancellation_token,
+                                   std::function<void(AuthConnectResult)> on_complete)
+{
+    auto completed = std::make_shared<std::atomic<bool>>(false);
+
+    auto _on_complete = [this, completed, on_complete](AuthConnectResult value) mutable
+    {
+        if (completed->exchange(true))
+        {
+            return;
+        }
+
+        if (value.result.has_value())
+        {
+            this->auth_store->save(value.result.value());
+        }
+        on_complete(std::move(value));
+        server.stop();
+    };
+
+    worker = std::jthread(
+        [this, original_auth_info, cancellation_token, _on_complete]() mutable
+        {
+            std::stop_callback on_cancel(
+                cancellation_token, [_on_complete]() mutable
+                { _on_complete(AuthConnectResult{.status = AuthConnectStatus::Cancelled}); });
+
+            auto refreshed_info = retrieve_refreshed_auth_info(original_auth_info.refresh_token);
+            if (!refreshed_info)
+            {
+                const auto* error_msg = "Unable to retrieve tokens.";
+                _on_complete(
+                    AuthConnectResult{.status = AuthConnectStatus::Error, .error_msg = error_msg});
+                return;
+            }
+
+            _on_complete(AuthConnectResult{
+                .status = AuthConnectStatus::Ok,
+                .result = refreshed_info,
+            });
+        });
 }
 
 void OneDriveAuthProvider::setup_incoming_server(std::function<void(AuthConnectResult)> on_value)
@@ -135,11 +170,34 @@ void OneDriveAuthProvider::setup_incoming_server(std::function<void(AuthConnectR
         });
 }
 
-std::optional<entities::AuthInfo> OneDriveAuthProvider::retrieve_auth_info(std::string code)
+std::optional<entities::AuthInfo> OneDriveAuthProvider::retrieve_auth_info(std::string_view code)
 {
     auto params = request_base_params;
     params.emplace("code", code.data());
     params.emplace("code_verifier", pkce_pairs.code_verifier);
+    params.emplace("grant_type", "authorization_code");
+
+    auto res = client.Post(onedrive_token_req_endpoint, request_headers, params);
+    if (!res)
+    {
+        return std::nullopt;
+    }
+
+    if (res->status < 200 || res->status >= 300)
+    {
+        return std::nullopt;
+    }
+
+    return onedrive::parse_auth_info(res->body);
+}
+
+std::optional<entities::AuthInfo>
+OneDriveAuthProvider::retrieve_refreshed_auth_info(std::string_view refresh_token)
+{
+    auto params = request_base_params;
+    params.emplace("refresh_token", refresh_token);
+    params.emplace("code_verifier", pkce_pairs.code_verifier);
+    params.emplace("grant_type", "refresh_token");
 
     auto res = client.Post(onedrive_token_req_endpoint, request_headers, params);
     if (!res)

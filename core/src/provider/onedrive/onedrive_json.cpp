@@ -16,12 +16,14 @@ std::optional<entities::AuthInfo> parse_auth_info(std::string& response)
     {
         auto body = json::parse(response);
         auto access_token = body.at("access_token").get<std::string>();
+        auto refresh_token = body.at("refresh_token").get<std::string>();
         auto expires_in = body.value("expires_in", 3600);
         auto expires_on = std::time(nullptr) + expires_in;
 
         return entities::AuthInfo{
             .provider_id = entities::ProviderId::OneDrive,
             .access_token = access_token,
+            .refresh_token = refresh_token,
             .provider_specific_auth_info =
                 entities::MsalSpecificAuthInfo{
                     .home_account_id = "",
