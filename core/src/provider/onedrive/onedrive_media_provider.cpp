@@ -24,14 +24,15 @@ FolderContentResult OneDriveMediaProvider::list_root()
         return {.status = MediaProviderResultStatus::MissingAuth};
     }
 
-    auto headers = auth_headers.value();
-    headers.insert(base_headers.begin(), base_headers.end());
+    httplib::Headers headers(base_headers);
+    headers.insert(auth_headers->begin(), auth_headers->end());
     auto res = client.Get(onedrive_list_root_endpoint, headers);
     if (!res || res->status < 200 || res->status >= 300)
     {
         // TODO: Actually type this based on errors.
         return {.status = MediaProviderResultStatus::ApiError,
-                .error = MediaProviderError::Unknown};
+                .error = res->status == 401 ? MediaProviderError::Unauthorized
+                                            : MediaProviderError::Unknown};
     }
 
     const auto parsed_response = onedrive::parse_list_response(res->body);
@@ -47,7 +48,33 @@ FolderContentResult OneDriveMediaProvider::list_root()
 
 FolderContentResult OneDriveMediaProvider::list_folder(entities::FolderMetadata& folder)
 {
-    return {};
+    auto auth_headers =
+        queries::auth::authorized_headers(auth_store, entities::ProviderId::OneDrive);
+    if (!auth_headers)
+    {
+        return {.status = MediaProviderResultStatus::MissingAuth};
+    }
+
+    httplib::Headers headers(base_headers);
+    headers.insert(auth_headers->begin(), auth_headers->end());
+    auto res = client.Get(std::format("{}/{}", onedrive_items_endpoint, folder.id.value), headers);
+    if (!res || res->status < 200 || res->status >= 300)
+    {
+        // TODO: Actually type this based on errors.
+        return {.status = MediaProviderResultStatus::ApiError,
+                .error = res->status == 401 ? MediaProviderError::Unauthorized
+                                            : MediaProviderError::Unknown};
+    }
+
+    const auto parsed_response = onedrive::parse_list_response(res->body);
+    if (!parsed_response)
+    {
+        // TODO: Actually type this based on errors.
+        return {.status = MediaProviderResultStatus::ApiError,
+                .error = MediaProviderError::Unknown};
+    }
+
+    return {.status = MediaProviderResultStatus::Ok, .result = parsed_response.value()};
 };
 
 UrlResult OneDriveMediaProvider::file_url_by_id(entities::ItemId& id)

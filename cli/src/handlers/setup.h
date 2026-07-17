@@ -1,7 +1,7 @@
 #pragma once
 
+#include "args.h"
 #include "auth_store.h"
-#include "handlers/args.h"
 
 /**
  * Attempts to begin the setup of a file-based provider. If not logged in, it shows an error

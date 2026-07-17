@@ -3,6 +3,7 @@
 #include <array>
 #include <cstdint>
 #include <ctime>
+#include <optional>
 #include <string_view>
 #include <variant>
 
@@ -59,33 +60,34 @@ struct ProviderMetadata
 };
 
 /**
- * The current status that a provider is in.
+ * Status sentinel for when a provider has not been started yet.
  */
-enum ProviderStatusKind : std::int8_t
+struct ProviderStatusNotStarted
 {
-    /** The provider has yet to be started. */
-    NotStarted,
-    /** The provider is currently syncing. */
-    Syncing,
-    /** The provider has finished syncing successfully, although some of the tracks might have
-       failed. */
-    Synced,
-    /** The provider has not synced because it was last synced recently. */
-    SyncSkipped,
-    /** The provider has errored while syncing and nothing has been retrieved. */
-    Errored,
-    /** The provider has been stopped. */
-    Stopped
 };
 
-struct ProviderStatusSyncedData
+/**
+ * Status sentinel for when a provider is in the middle of a sync.
+ */
+struct ProviderStatusSyncing
+{
+};
+
+/**
+ * Status for when a provider has finished syncing, with information about how the sync went.
+ */
+struct ProviderStatusSynced
 {
     std::time_t last_sync;
     int synced_tracks;
     int errored_tracks;
 };
 
-struct ProviderStatusSyncSkippedData
+/**
+ * Status for when a provider has skipped syncing due to the last sync being recent. Attaches a last
+ * synced time.
+ */
+struct ProviderStatusSyncSkipped
 {
     std::time_t last_synced_at;
 };
@@ -96,18 +98,25 @@ enum ProviderError : std::int8_t
     ApiGatewayError,
 };
 
-struct ProviderErroredData
+/**
+ * Status for when a provider has errored during the sync with information about it.
+ */
+struct ProviderStatusErrored
 {
     ProviderError error;
 };
 
 /**
- * Holds the current status of a provider, which can be of `ProviderStatusKind`, with
- * optional associated data.
+ * Sentinel status for when a provider has been stopped by the user.
  */
-struct ProviderStatus
+struct ProviderStatusStopped
 {
-    ProviderStatusKind kind;
-    std::variant<ProviderStatusSyncedData, ProviderStatusSyncSkippedData, ProviderErroredData> data;
 };
+
+/**
+ * Holds all the possible current statuses of a provider.
+ */
+using ProviderStatus =
+    std::variant<ProviderStatusNotStarted, ProviderStatusSyncing, ProviderStatusSynced,
+                 ProviderStatusSyncSkipped, ProviderStatusErrored, ProviderStatusStopped>;
 } // namespace entities

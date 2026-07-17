@@ -16,9 +16,10 @@ enum class MediaProviderResultStatus : uint8_t
     ApiError,
 };
 
-enum class MediaProviderError : uint8_t
+enum class MediaProviderError : uint16_t
 {
-    Unknown = 0
+    Unknown = 0,
+    Unauthorized = 401
 };
 
 template <typename T> struct MediaProviderResult

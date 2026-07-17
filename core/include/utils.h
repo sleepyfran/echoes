@@ -14,6 +14,28 @@ constexpr const char* content_type_text = "text/plain";
 constexpr const char* content_type_json = "application/json";
 
 /**
+ * @brief Helper utility for std::visit to allow "pattern matching" with multiple lambdas.
+ *
+ * This struct uses variadic inheritance to merge multiple callable objects (usually lambdas)
+ * into a single object. This allows std::visit to dispatch the variant's active type to
+ * the corresponding lambda overload.
+ *
+ * Example Usage:
+ * @code
+ * std::variant<int, std::string> v = "Hello";
+ * std::visit(overloaded {
+ *     [](int val) { std::cout << "Integer: " << val; },
+ *     [](const std::string& val) { std::cout << "String: " << val; }
+ * }, v);
+ * @endcode
+ */
+template <class... Ts> struct overloaded : Ts...
+{
+    using Ts::operator()...;
+};
+template <class... Ts> overloaded(Ts...) -> overloaded<Ts...>;
+
+/**
  * Encodes a URL to make it safe to be used in URLs per the RFC 3986 standard.
  */
 inline std::string url_encode(std::string_view value)

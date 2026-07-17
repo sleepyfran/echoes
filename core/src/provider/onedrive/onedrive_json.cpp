@@ -62,8 +62,9 @@ std::optional<media_provider::FolderContent> parse_list_response(std::string& re
                 const auto& f = v.at("folder");
                 const uint32_t child_count = f.value("child_count", 0);
                 content.emplace_back(entities::FolderMetadata{
-                    {.id = entities::ItemId{id}, .name = name, .byte_size = size},
-                    .child_count = 0,
+                    entities::BaseMetadata{
+                        .id = entities::ItemId{id}, .name = name, .byte_size = size},
+                    child_count,
                 });
             }
             else if (v.contains("file"))
@@ -72,9 +73,9 @@ std::optional<media_provider::FolderContent> parse_list_response(std::string& re
                 const auto mime_type = f.value("mime_type", "");
                 const auto download_url = f.value("@microsoft.graph.downloadUrl", "");
                 content.emplace_back(entities::FileMetadata{
-                    {.id = entities::ItemId{id}, .name = name, .byte_size = size},
-                    .mime_type = mime_type,
-                    .download_url = download_url});
+                    entities::BaseMetadata{
+                        .id = entities::ItemId{id}, .name = name, .byte_size = size},
+                    mime_type, download_url});
             }
         }
 
