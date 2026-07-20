@@ -2,6 +2,7 @@
 #include "handlers/login.h"
 #include "unsafe_file_auth_store.h"
 #include <iostream>
+#include <span>
 #include <string_view>
 
 void print_usage(std::string_view executable_name)
@@ -9,24 +10,13 @@ void print_usage(std::string_view executable_name)
     std::cerr << "Usage: " << executable_name << " login onedrive\n";
 }
 
-int main(int argc, char* argv[])
+Args parse_args(std::span<char*> argv)
 {
-    UnsafeFileAuthStore auth_store;
-    try
-    {
-        auth_store.load_from_file();
-    }
-    catch (...)
-    {
-        std::cerr << "Unable to create config file, auth information won't be saved";
-    }
-
-    const std::string_view executable_name = argc > 0 ? argv[0] : "echoes-cli";
-
     Args args{};
-    for (int i = 1; i < argc; i++)
+
+    for (auto& arg : argv)
     {
-        const std::string_view argument = argv[i];
+        auto argument = std::string_view(arg);
         if (argument.empty())
         {
             continue;
@@ -46,6 +36,24 @@ int main(int argc, char* argv[])
         }
     }
 
+    return args;
+}
+
+int main(int argc, char* argv[])
+{
+    UnsafeFileAuthStore auth_store;
+    try
+    {
+        auth_store.load_from_file();
+    }
+    catch (...)
+    {
+        std::cerr << "Unable to create config file, auth information won't be saved";
+    }
+
+    const std::string_view executable_name = argc > 0 ? argv[0] : "echoes-cli";
+
+    const Args args = parse_args(std::span(argv, argc));
     if (!args.positional.empty() && args.positional[0] == "login")
     {
         return handle_login_command(auth_store, args);
