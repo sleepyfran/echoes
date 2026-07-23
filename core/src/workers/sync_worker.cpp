@@ -44,7 +44,7 @@ void SyncWorker::run(const std::stop_token& token)
         std::visit(utils::overloaded{[this](const entities::SyncWorkerStartMessage& m)
                                      {
                                          entities::ProviderStatusSyncing next_status;
-                                         notify(entities::SyncWorkerEventStatusChanged{
+                                         publish(entities::SyncWorkerEventStatusChanged{
                                              .previous = status_,
                                              .current = next_status,
                                          });
@@ -53,7 +53,7 @@ void SyncWorker::run(const std::stop_token& token)
                                      [this](const entities::SyncWorkerStopMessage& m)
                                      {
                                          entities::ProviderStatusStopped next_status{};
-                                         notify(entities::SyncWorkerEventStatusChanged{
+                                         publish(entities::SyncWorkerEventStatusChanged{
                                              .previous = status_,
                                              .current = next_status,
                                          });
@@ -67,36 +67,11 @@ void SyncWorker::run(const std::stop_token& token)
     }
 }
 
-void SyncWorker::notify(entities::SyncWorkerEvent event) const
-{
-    for (const auto& subscription : subscriptions)
-    {
-        subscription(event);
-    }
-}
-
 void SyncWorker::raise(const entities::SyncWorkerMessage& message)
 {
     std::unique_lock<std::mutex> lock{message_mutex_};
     messages_.emplace_back(message);
     message_condition_var_.notify_one();
-}
-
-SubscriptionId SyncWorker::subscribe(std::function<void(entities::SyncWorkerEvent)> on_event)
-{
-    subscriptions.push_back(std::move(on_event));
-    return subscriptions.size() - 1;
-}
-
-void SyncWorker::unsubscribe(SubscriptionId id)
-{
-    const unsigned long current_count = subscriptions.size();
-    if (id < current_count && id > current_count)
-    {
-        return;
-    }
-
-    subscriptions.erase(subscriptions.begin() + id);
 }
 
 const entities::ProviderStatus& SyncWorker::status() const
