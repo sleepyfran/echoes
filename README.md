@@ -110,3 +110,30 @@ cmake -S . -B build-cli -DECHOES_BUILD_LINUX_UI=OFF
 cmake --build build-cli
 ./build-cli/cli/echoes-cli
 ```
+
+## Current status and roadmap
+
+Below is a list of things I'm currently working on or planning to work on:
+- [ ] Basic file-based provider support (OneDrive only for now; file discovery, parsing, etc.)
+- [ ] Basic remote playback support (OneDrive only for now; streaming, buffering, etc.)
+- [ ] Bare-bones CLI for interacting with the core library (for testing purposes)
+- [ ] Linux UI through KDE Kirigami
+- [ ] macOS native UI through SwiftUI
+- [ ] Spotify provider support
+- [ ] Local files provider support
+- [ ] Genre tagging and browsing
+- [ ] Last.fm scrobbling support
+- [ ] Album and artist shuffling
+- [ ] Queue management
+- [ ] Tag and metadata editing
+
+## The hows and whys
+
+### WHY C++ WHEN RUST IS THERE?
+
+Simply because I wanted to finally learn C++ properly and wanted to feel in my own skin whether what people say about C++ being incredibly hard to learn and easy to misuse is true. Also, since cross-platform was the goal from the very beginning, using a language that is widely supported on all target platforms without too much fuzz was nice to have.
+
+### AI usage
+
+Since this is a learning project, I wanted to type each and every character of the code myself (except for some good ol' copy-pasta here and there). I did use AI for research, discovery of the std library and overall help in some topics, but I generally wrote everything myself. I know, right, on this day and age!
+
