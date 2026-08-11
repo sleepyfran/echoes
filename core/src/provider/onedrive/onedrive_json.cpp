@@ -69,9 +69,10 @@ std::optional<media_provider::FolderContent> parse_list_response(std::string& re
             }
             else if (v.contains("file"))
             {
+                const auto download_url = v.value("@microsoft.graph.downloadUrl", "");
+
                 const auto& f = v.at("file");
-                const auto mime_type = f.value("mime_type", "");
-                const auto download_url = f.value("@microsoft.graph.downloadUrl", "");
+                const auto mime_type = f.value("mimeType", "");
                 content.emplace_back(entities::FileMetadata{
                     entities::BaseMetadata{
                         .id = entities::ItemId{id}, .name = name, .byte_size = size},

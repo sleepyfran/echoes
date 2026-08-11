@@ -23,10 +23,8 @@ struct GlobalDependencies
 std::unique_ptr<AuthProvider> create_auth_provider(entities::ProviderId, GlobalDependencies);
 
 /**
- * Creates a file-based provider from the given provider ID. If the provider ID is not associated
- * with a file-based one, it returns null.
- * TODO: Would we need this? Should we hide it behind a shared provider?
+ * Creates the associated media provider for the given ID.
  */
-std::optional<std::unique_ptr<media_provider::FileBasedProvider>>
-    create_file_based_provider(entities::ProviderId, GlobalDependencies);
+std::unique_ptr<media_provider::MediaProvider> create_provider(entities::ProviderId,
+                                                               GlobalDependencies);
 } // namespace providers

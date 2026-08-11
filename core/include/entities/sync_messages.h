@@ -33,14 +33,6 @@ struct SyncWorkerStartMessage
 };
 
 /**
- * Message sent to a previously started provider to stop its operation. No-op if the provider is not
- * started or in a non-syncing state.
- */
-struct SyncWorkerStopMessage
-{
-};
-
-/**
  * Message sent when a provider should perform a sync regardless of when the last sync was.
  */
 struct SyncWorkerForceSyncMessage
@@ -50,8 +42,7 @@ struct SyncWorkerForceSyncMessage
 /**
  * Defines a message that can be passed onto a sync worker to modify its status.
  */
-using SyncWorkerMessage =
-    std::variant<SyncWorkerStartMessage, SyncWorkerStopMessage, SyncWorkerForceSyncMessage>;
+using SyncWorkerMessage = std::variant<SyncWorkerStartMessage, SyncWorkerForceSyncMessage>;
 
 /**
  * Defines the types of events that a sync worker can raise during its lifetime.
@@ -72,8 +63,28 @@ struct SyncWorkerEventStatusChanged
 };
 
 /**
+ * Sync worker event raised when a folder could not be enumerated during a sync, along with the
+ * reason why.
+ */
+struct SyncWorkerFolderSkippedDuringSync
+{
+    entities::FolderMetadata folder;
+    entities::ProviderError error;
+};
+
+/**
+ * Sync worker event raised when a file has been processed by the sync process.
+ */
+struct SyncWorkerFileProcessedDuringSync
+{
+    entities::FileMetadata file;
+};
+
+/**
  * Defines an event that can be raised by a sync worker to notify the main thread of something that
  * happened during its lifetime.
  */
-using SyncWorkerEvent = std::variant<SyncWorkerEventStatusChanged>;
+using SyncWorkerEvent =
+    std::variant<SyncWorkerEventStatusChanged, SyncWorkerFolderSkippedDuringSync,
+                 SyncWorkerFileProcessedDuringSync>;
 } // namespace entities

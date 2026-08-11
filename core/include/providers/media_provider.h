@@ -1,6 +1,7 @@
 #pragma once
 
 #include "entities/file_system.h"
+#include "entities/provider.h"
 #include <cstdint>
 #include <vector>
 
@@ -33,29 +34,40 @@ using FolderContent = std::vector<entities::ItemMetadata>;
 using FolderContentResult = MediaProviderResult<FolderContent>;
 using UrlResult = MediaProviderResult<std::string>;
 
+class MediaProvider
+{
+  public:
+    entities::ProviderId id;
+    entities::ProviderStatus status;
+
+    MediaProvider(entities::ProviderId id) : id{id} {};
+    virtual ~MediaProvider() = default;
+};
+
 /**
  * Virtual class that should be implemented by providers that use file-based operations like
  * OneDrive.
  */
-class FileBasedProvider
+class FileBasedProvider : public MediaProvider
 {
   public:
-    FileBasedProvider() = default;
-    virtual ~FileBasedProvider() = default;
+    FileBasedProvider(entities::ProviderId id) : MediaProvider(id) {};
+    ~FileBasedProvider() override = default;
 
     /**
      * Lists the root folder of the provider.
      */
-    virtual FolderContentResult list_root() = 0;
+    [[nodiscard]] virtual FolderContentResult list_root() = 0;
 
     /**
      * Lists the contents of a specific folder.
      */
-    virtual FolderContentResult list_folder(entities::FolderMetadata& folder) = 0;
+    [[nodiscard]] virtual FolderContentResult
+    list_folder(const entities::FolderMetadata& folder) = 0;
 
     /**
      * Returns the URL that points to a specific item by its ID.
      */
-    virtual UrlResult file_url_by_id(entities::ItemId& id) = 0;
+    [[nodiscard]] virtual UrlResult file_url_by_id(const entities::ItemId& id) = 0;
 };
 } // namespace media_provider

@@ -51,7 +51,7 @@ void on_status_change_event_received(std::promise<bool>& completion_promise,
         event.current);
 }
 
-void handle_selected_item(entities::ProviderId provider_id,
+void handle_selected_item(providers::GlobalDependencies deps, entities::ProviderId provider_id,
                           std::optional<entities::ItemMetadata>& item)
 {
     if (!item || std::holds_alternative<entities::FileMetadata>(item.value()))
@@ -64,7 +64,7 @@ void handle_selected_item(entities::ProviderId provider_id,
     std::cout << "Starting provider...\n";
 
     // TODO: Move this out of the method.
-    sync::SyncWorkerManager manager;
+    sync::SyncWorkerManager manager{deps};
 
     std::promise<bool> completion_promise;
     auto completion_future = completion_promise.get_future();
@@ -75,7 +75,14 @@ void handle_selected_item(entities::ProviderId provider_id,
             std::visit(
                 utils::overloaded{
                     [&completion_promise](entities::SyncWorkerEventStatusChanged event)
-                    { on_status_change_event_received(completion_promise, event); }},
+                    { on_status_change_event_received(completion_promise, event); },
+                    [](entities::SyncWorkerFolderSkippedDuringSync& event)
+                    {
+                        std::cout << "The following folder was ignored due to an error: "
+                                  << event.folder.name << "\n";
+                    },
+                    [](entities::SyncWorkerFileProcessedDuringSync& event)
+                    { std::cout << event.file.name << " processed" << "\n"; }},
                 event);
         });
 
@@ -112,9 +119,11 @@ int handle_setup(AuthStore& auth_store, const Args& args)
         return 1;
     }
 
-    // TODO: Implement actual start flow.
-    const auto file_based_provider =
-        providers::create_file_based_provider(provider_id.value(), {.auth_store = &auth_store});
+    providers::GlobalDependencies deps{.auth_store = &auth_store};
+
+    // TODO: Encapsulate this better or move somewhere else.
+    auto provider = providers::create_provider(provider_id.value(), deps);
+    auto* file_based_provider = dynamic_cast<media_provider::FileBasedProvider*>(provider.get());
     if (!file_based_provider)
     {
         std::cerr << provider_id_str << " is not a file-based provider.\n";
@@ -122,14 +131,14 @@ int handle_setup(AuthStore& auth_store, const Args& args)
     }
 
     std::cout << "Retrieving root folder contents...\n";
-    auto res = file_based_provider.value()->list_root();
+    auto res = file_based_provider->list_root();
     switch (res.status)
     {
     case media_provider::MediaProviderResultStatus::Ok:
     {
         auto item = components::select_from_list(res.result, [](const auto& item)
                                                  { return entities::base_metadata(item).name; });
-        handle_selected_item(provider_id.value(), item);
+        handle_selected_item(deps, provider_id.value(), item);
         break;
     }
     default:

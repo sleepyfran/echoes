@@ -1,7 +1,16 @@
+#pragma once
+
+#include <cstdint>
 #include <functional>
 #include <vector>
 
 using SubscriptionId = uint8_t;
+
+/**
+ * A restricted capability that allows a collaborator to publish events without exposing the
+ * underlying pub-sub.
+ */
+template <typename T> using Publisher = std::function<void(const T&)>;
 
 /**
  * Encapsulates a progress reporter that can accept subscriptions and raises events to all of them
@@ -15,12 +24,21 @@ template <typename T> class PubSub
     /**
      * Publishes a new event to all subscribers.
      */
-    void publish(const T& event)
+    void publish(const T& event) const
     {
         for (const auto& subscription : subscriptions)
         {
             subscription(event);
         }
+    }
+
+    /**
+     * Creates a publishing capability that can be passed to collaborators without exposing publish
+     * to consumers of this pub-sub.
+     */
+    [[nodiscard]] Publisher<T> publisher() const
+    {
+        return [this](const T& event) { publish(event); };
     }
 
   public:

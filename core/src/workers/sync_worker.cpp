@@ -2,6 +2,7 @@
 #include "entities/provider.h"
 #include "entities/sync_messages.h"
 #include "utils.h"
+#include "workers/file_sync_worker.h"
 #include <iostream>
 #include <mutex>
 #include <stop_token>
@@ -9,9 +10,8 @@
 
 namespace sync
 {
-SyncWorker::SyncWorker(entities::ProviderId provider_id)
-    : status_{entities::ProviderStatusNotStarted{}}, provider_id_{provider_id},
-      message_thread_{[this](const auto& token) { run(token); }}
+SyncWorker::SyncWorker(std::unique_ptr<media_provider::MediaProvider> provider)
+    : provider{std::move(provider)}, message_thread_{[this](const auto& token) { run(token); }}
 {
 }
 
@@ -41,30 +41,36 @@ void SyncWorker::run(const std::stop_token& token)
             messages_.pop_front();
         }
 
-        std::visit(utils::overloaded{[this](const entities::SyncWorkerStartMessage& m)
-                                     {
-                                         entities::ProviderStatusSyncing next_status;
-                                         publish(entities::SyncWorkerEventStatusChanged{
-                                             .previous = status_,
-                                             .current = next_status,
-                                         });
-                                         status_ = next_status;
-                                     },
-                                     [this](const entities::SyncWorkerStopMessage& m)
-                                     {
-                                         entities::ProviderStatusStopped next_status{};
-                                         publish(entities::SyncWorkerEventStatusChanged{
-                                             .previous = status_,
-                                             .current = next_status,
-                                         });
-                                         status_ = next_status;
-                                     },
-                                     [this](const entities::SyncWorkerForceSyncMessage& m)
-                                     {
-                                         // TODO: Implement.
-                                     }},
-                   message);
+        std::visit(
+            utils::overloaded{
+                [this, &token](const entities::SyncWorkerStartMessage& m)
+                {
+                    notify_status_changed(entities::ProviderStatusSyncing());
+
+                    if (auto* file_based_provider =
+                            dynamic_cast<media_provider::FileBasedProvider*>(this->provider.get()))
+                    {
+                        auto args = std::get<entities::FileBasedProviderStartArgs>(m.args.args);
+
+                        file_sync::sync_file_based_provider(this->publisher(), args.selected_folder,
+                                                            *file_based_provider, token);
+                    }
+                },
+                [this](const entities::SyncWorkerForceSyncMessage& m)
+                {
+                    // TODO: Implement.
+                }},
+            message);
     }
+}
+
+void SyncWorker::notify_status_changed(const entities::ProviderStatus& status)
+{
+    publish(entities::SyncWorkerEventStatusChanged{
+        .previous = this->provider->status,
+        .current = status,
+    });
+    this->provider->status = status;
 }
 
 void SyncWorker::raise(const entities::SyncWorkerMessage& message)
@@ -74,8 +80,15 @@ void SyncWorker::raise(const entities::SyncWorkerMessage& message)
     message_condition_var_.notify_one();
 }
 
+void SyncWorker::stop_sync()
+{
+    std::unique_lock<std::mutex> lock{message_mutex_};
+    this->message_thread_.request_stop();
+    notify_status_changed(entities::ProviderStatusStopped());
+}
+
 const entities::ProviderStatus& SyncWorker::status() const
 {
-    return status_;
+    return this->provider->status;
 }
 } // namespace sync

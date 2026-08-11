@@ -4,7 +4,6 @@
 #include "providers/auth_provider.h"
 #include "providers/onedrive_config.h"
 #include <memory>
-#include <optional>
 
 namespace providers
 {
@@ -25,8 +24,8 @@ std::unique_ptr<AuthProvider> create_auth_provider(entities::ProviderId id, Glob
     }
 }
 
-std::optional<std::unique_ptr<media_provider::FileBasedProvider>>
-create_file_based_provider(entities::ProviderId provider_id, GlobalDependencies deps)
+std::unique_ptr<media_provider::MediaProvider> create_provider(entities::ProviderId provider_id,
+                                                               GlobalDependencies deps)
 {
     switch (provider_id)
     {
@@ -34,9 +33,10 @@ create_file_based_provider(entities::ProviderId provider_id, GlobalDependencies 
     {
         return std::make_unique<media_provider::OneDriveMediaProvider>(deps.auth_store);
     }
-    default:
+    case entities::ProviderId::Spotify:
     {
-        return std::nullopt;
+        // TODO: Handle Spotify.
+        return nullptr;
     }
     }
 }

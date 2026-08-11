@@ -10,7 +10,7 @@
 namespace media_provider
 {
 OneDriveMediaProvider::OneDriveMediaProvider(AuthStore* auth_store)
-    : client{onedrive_graph_host, onedrive_port},
+    : FileBasedProvider(entities::ProviderId::OneDrive), client{onedrive_graph_host, onedrive_port},
       base_headers({{"Accept", utils::content_type_json}}), auth_store{auth_store}
 {
 }
@@ -46,7 +46,7 @@ FolderContentResult OneDriveMediaProvider::list_root()
     return {.status = MediaProviderResultStatus::Ok, .result = parsed_response.value()};
 }
 
-FolderContentResult OneDriveMediaProvider::list_folder(entities::FolderMetadata& folder)
+FolderContentResult OneDriveMediaProvider::list_folder(const entities::FolderMetadata& folder)
 {
     auto auth_headers =
         queries::auth::authorized_headers(auth_store, entities::ProviderId::OneDrive);
@@ -57,7 +57,7 @@ FolderContentResult OneDriveMediaProvider::list_folder(entities::FolderMetadata&
 
     httplib::Headers headers(base_headers);
     headers.insert(auth_headers->begin(), auth_headers->end());
-    auto res = client.Get(std::format("{}/{}", onedrive_items_endpoint, folder.id.value), headers);
+    auto res = client.Get(std::format("{}/{}/children", onedrive_items_endpoint, folder.id.value), headers);
     if (!res || res->status < 200 || res->status >= 300)
     {
         // TODO: Actually type this based on errors.
@@ -77,7 +77,7 @@ FolderContentResult OneDriveMediaProvider::list_folder(entities::FolderMetadata&
     return {.status = MediaProviderResultStatus::Ok, .result = parsed_response.value()};
 };
 
-UrlResult OneDriveMediaProvider::file_url_by_id(entities::ItemId& id)
+UrlResult OneDriveMediaProvider::file_url_by_id(const entities::ItemId& id)
 {
     return {};
 };

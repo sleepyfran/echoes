@@ -54,7 +54,7 @@ class OneDriveMediaProvider : public FileBasedProvider
   public:
     OneDriveMediaProvider(AuthStore* auth_store);
     FolderContentResult list_root() override;
-    FolderContentResult list_folder(entities::FolderMetadata& folder) override;
-    UrlResult file_url_by_id(entities::ItemId& id) override;
+    FolderContentResult list_folder(const entities::FolderMetadata& folder) override;
+    UrlResult file_url_by_id(const entities::ItemId& id) override;
 };
 } // namespace media_provider
