@@ -73,6 +73,16 @@ struct SyncWorkerFolderSkippedDuringSync
 };
 
 /**
+ * Sync worker event raised when a file could not be downloaded or parsed during a sync, along with
+ * the reason why.
+ */
+struct SyncWorkerFileSkippedDuringSync
+{
+    entities::FileMetadata file;
+    entities::FileProcessingError error;
+};
+
+/**
  * Sync worker event raised when a file has been processed by the sync process.
  */
 struct SyncWorkerFileProcessedDuringSync
@@ -86,5 +96,5 @@ struct SyncWorkerFileProcessedDuringSync
  */
 using SyncWorkerEvent =
     std::variant<SyncWorkerEventStatusChanged, SyncWorkerFolderSkippedDuringSync,
-                 SyncWorkerFileProcessedDuringSync>;
+                 SyncWorkerFileSkippedDuringSync, SyncWorkerFileProcessedDuringSync>;
 } // namespace entities

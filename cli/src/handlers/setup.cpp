@@ -44,7 +44,9 @@ void on_status_change_event_received(std::promise<bool>& completion_promise,
             { std::cout << "Provider is syncing\n"; },
             [&completion_promise](entities::ProviderStatusSynced s)
             {
-                std::cout << "Provider has finished syncing\n";
+                std::cout << "Provider has finished syncing " << s.synced_tracks
+                          << " tracks have been correctly synced and " << s.errored_tracks
+                          << " have failed " << "\n";
                 completion_promise.set_value(true);
             },
         },
@@ -80,6 +82,11 @@ void handle_selected_item(providers::GlobalDependencies deps, entities::Provider
                     {
                         std::cout << "The following folder was ignored due to an error: "
                                   << event.folder.name << "\n";
+                    },
+                    [](entities::SyncWorkerFileSkippedDuringSync& event)
+                    {
+                        std::cout << "The following file was ignored due to an error: "
+                                  << event.file.name << "\n";
                     },
                     [](entities::SyncWorkerFileProcessedDuringSync& event)
                     { std::cout << event.file.name << " processed" << "\n"; }},

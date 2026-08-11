@@ -3,6 +3,7 @@
 #include "entities/sync_messages.h"
 #include "providers/media_provider.h"
 #include "pubsub.h"
+#include "workers/downloader.h"
 #include <stop_token>
 namespace file_sync
 {
@@ -12,6 +13,7 @@ namespace file_sync
  * download, each new file saved, etc.).
  */
 void sync_file_based_provider(const Publisher<entities::SyncWorkerEvent>& pubsub,
+                              downloader::Downloader& downloader,
                               const entities::FolderMetadata& root_folder,
                               media_provider::FileBasedProvider& provider,
                               const std::stop_token& cancellation_token);

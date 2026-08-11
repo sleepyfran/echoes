@@ -49,6 +49,7 @@ std::optional<std::vector<entities::FileMetadata>> recursively_list_files(
         return std::nullopt;
     }
 
+    // TODO: Paralellize this.
     std::vector<entities::FileMetadata> gathered_files;
     for (auto item : contents.result)
     {
@@ -71,32 +72,8 @@ std::optional<std::vector<entities::FileMetadata>> recursively_list_files(
     return gathered_files;
 }
 
-std::optional<std::string> partially_download_file(const entities::FileMetadata& file)
-{
-    auto parsed_url = utils::parse_url(file.download_url);
-    if (!parsed_url)
-    {
-        return std::nullopt;
-    }
-
-    httplib::SSLClient client{parsed_url->host};
-    httplib::Headers headers{{"Range", "bytes=0-50000"}};
-    auto response = client.Get(parsed_url->path, headers);
-
-    if (!response)
-    {
-        return std::nullopt;
-    }
-
-    if (response->status == 200 || response->status == 206)
-    {
-        return response->body;
-    }
-
-    return std::nullopt;
-}
-
 void sync_file_based_provider(const Publisher<entities::SyncWorkerEvent>& pubsub,
+                              downloader::Downloader& downloader,
                               const entities::FolderMetadata& root_folder,
                               media_provider::FileBasedProvider& provider,
                               const std::stop_token& cancellation_token)
@@ -116,6 +93,8 @@ void sync_file_based_provider(const Publisher<entities::SyncWorkerEvent>& pubsub
         return;
     }
 
+    std::atomic<size_t> successful_processed{0};
+    std::atomic<size_t> error_processed{0};
     for (auto& file : files.value())
     {
         if (!is_supported_file(file))
@@ -123,15 +102,30 @@ void sync_file_based_provider(const Publisher<entities::SyncWorkerEvent>& pubsub
             continue;
         }
 
-        auto contents = partially_download_file(file);
-        pubsub(entities::SyncWorkerFileProcessedDuringSync{file});
+        downloader.queue(
+            file.download_url,
+            [&pubsub, &file, &successful_processed, &error_processed](auto result)
+            {
+                if (std::holds_alternative<std::string_view>(result))
+                {
+                    successful_processed.fetch_add(1, std::memory_order_relaxed);
+                    pubsub(entities::SyncWorkerFileProcessedDuringSync{file});
+                }
+                else
+                {
+                    error_processed.fetch_add(1, std::memory_order_relaxed);
+                    pubsub(entities::SyncWorkerFileSkippedDuringSync{
+                        .file = file, .error = entities::FileProcessingError::DownloadFailed});
+                }
+            });
     }
 
-    // TODO: Actually fill this in correctly.
+    downloader.wait_for_all_queued();
+
     pubsub(entities::SyncWorkerEventStatusChanged{
         .previous = entities::ProviderStatusSyncing(),
-        .current = entities::ProviderStatusSynced{.synced_tracks = static_cast<int>(files->size()),
-                                                  .last_sync = time(nullptr),
-                                                  .errored_tracks = 0}});
+        .current = entities::ProviderStatusSynced{.last_sync = time(nullptr),
+                                                  .synced_tracks = successful_processed.load(),
+                                                  .errored_tracks = error_processed.load()}});
 }
 } // namespace file_sync

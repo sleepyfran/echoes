@@ -1,6 +1,7 @@
 #pragma once
 
 #include <array>
+#include <cstddef>
 #include <cstdint>
 #include <ctime>
 #include <optional>
@@ -79,8 +80,8 @@ struct ProviderStatusSyncing
 struct ProviderStatusSynced
 {
     std::time_t last_sync;
-    int synced_tracks;
-    int errored_tracks;
+    size_t synced_tracks;
+    size_t errored_tracks;
 };
 
 /**

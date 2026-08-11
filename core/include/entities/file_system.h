@@ -41,6 +41,15 @@ struct FileMetadata : public BaseMetadata
     std::string download_url;
 };
 
+/**
+ * Error that happened during the processing of a file.
+ */
+enum class FileProcessingError : uint8_t
+{
+    DownloadFailed,
+    ParsingFailed,
+};
+
 using ItemMetadata = std::variant<FileMetadata, FolderMetadata>;
 
 /**
@@ -50,6 +59,6 @@ using ItemMetadata = std::variant<FileMetadata, FolderMetadata>;
 inline const BaseMetadata& base_metadata(const ItemMetadata& item)
 {
     return std::visit([](const auto& alternative) -> const BaseMetadata& { return alternative; },
-                       item);
+                      item);
 }
 } // namespace entities
