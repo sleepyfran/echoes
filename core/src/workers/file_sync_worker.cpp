@@ -102,8 +102,8 @@ void sync_file_based_provider(const Publisher<entities::SyncWorkerEvent>& pubsub
             continue;
         }
 
-        downloader.queue(
-            file.download_url,
+        downloader.queue_download(
+            file.download_url, 50000,
             [&pubsub, &file, &successful_processed, &error_processed](auto result)
             {
                 if (std::holds_alternative<std::string_view>(result))
@@ -120,7 +120,7 @@ void sync_file_based_provider(const Publisher<entities::SyncWorkerEvent>& pubsub
             });
     }
 
-    downloader.wait_for_all_queued();
+    downloader.wait_for_all_downloads();
 
     pubsub(entities::SyncWorkerEventStatusChanged{
         .previous = entities::ProviderStatusSyncing(),
