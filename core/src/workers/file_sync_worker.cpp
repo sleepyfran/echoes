@@ -5,7 +5,11 @@
 #include "httplib.hpp"
 #include "providers/media_provider.h"
 #include "utils.h"
+#include "workers/concurrent_file_discovery.h"
 #include <ctime>
+#include <functional>
+#include <memory>
+#include <mutex>
 #include <optional>
 #include <regex>
 #include <stop_token>
@@ -26,52 +30,6 @@ bool is_supported_file(entities::FileMetadata& file)
     return std::regex_search(file.name, supported_audio_extensions);
 }
 
-entities::ProviderError map_to_provider_error(const media_provider::MediaProviderError& error)
-{
-    switch (error)
-    {
-    case media_provider::MediaProviderError::Unauthorized:
-        return entities::ProviderError::TokenExpired;
-    default:
-        return entities::ProviderError::ApiGatewayError;
-    }
-}
-
-std::optional<std::vector<entities::FileMetadata>> recursively_list_files(
-    const Publisher<entities::SyncWorkerEvent>& pubsub, const entities::FolderMetadata& root_folder,
-    media_provider::FileBasedProvider& provider, const std::stop_token& cancellation_token)
-{
-    auto contents = provider.list_folder(root_folder);
-    if (contents.status != media_provider::MediaProviderResultStatus::Ok)
-    {
-        pubsub(entities::SyncWorkerFolderSkippedDuringSync{
-            .folder = root_folder, .error = map_to_provider_error(contents.error)});
-        return std::nullopt;
-    }
-
-    // TODO: Paralellize this.
-    std::vector<entities::FileMetadata> gathered_files;
-    for (auto item : contents.result)
-    {
-        if (std::holds_alternative<entities::FileMetadata>(item))
-        {
-            gathered_files.push_back(std::get<entities::FileMetadata>(item));
-        }
-        else if (std::holds_alternative<entities::FolderMetadata>(item))
-        {
-            auto child_files = recursively_list_files(
-                pubsub, std::get<entities::FolderMetadata>(item), provider, cancellation_token);
-            if (child_files)
-            {
-                auto files = child_files.value();
-                gathered_files.insert(gathered_files.end(), std::begin(files), std::end(files));
-            }
-        }
-    }
-
-    return gathered_files;
-}
-
 void sync_file_based_provider(const Publisher<entities::SyncWorkerEvent>& pubsub,
                               downloader::Downloader& downloader,
                               const entities::FolderMetadata& root_folder,
@@ -84,8 +42,10 @@ void sync_file_based_provider(const Publisher<entities::SyncWorkerEvent>& pubsub
         return;
     }
 
-    auto files = recursively_list_files(pubsub, root_folder, provider, cancellation_token);
-    if (!files)
+    file_discovery::ConcurrentFileDiscovery discovery{provider};
+    discovery.queue_discovery(root_folder);
+    auto result = discovery.wait_for_all_files();
+    if (result.files.size() == 0)
     {
         pubsub(
             entities::SyncWorkerEventStatusChanged{.previous = entities::ProviderStatusSyncing(),
@@ -93,9 +53,15 @@ void sync_file_based_provider(const Publisher<entities::SyncWorkerEvent>& pubsub
         return;
     }
 
+    for (auto& error : result.errors)
+    {
+        pubsub(entities::SyncWorkerFolderSkippedDuringSync{.folder = error.containing_folder,
+                                                           .error = error.error});
+    }
+
     std::atomic<size_t> successful_processed{0};
     std::atomic<size_t> error_processed{0};
-    for (auto& file : files.value())
+    for (auto& file : result.files)
     {
         if (!is_supported_file(file))
         {
