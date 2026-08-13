@@ -32,6 +32,7 @@ template <typename T, typename R> class Concurrently
     std::vector<std::jthread> workers_;
 
     virtual R run(const T& job) = 0;
+    virtual void on_done() = 0;
 
     void worker(std::stop_token& stop)
     {
@@ -58,14 +59,17 @@ template <typename T, typename R> class Concurrently
             auto result = run(job_with_completion.job);
             job_with_completion.on_completed(result);
 
+            bool has_finished = false;
             {
                 std::unique_lock lock{mutex_};
                 --active_jobs_;
+                has_finished = jobs_.empty() && active_jobs_ == 0;
+            }
 
-                if (jobs_.empty() && active_jobs_ == 0)
-                {
-                    done_cv_.notify_all();
-                }
+            if (has_finished)
+            {
+                on_done();
+                done_cv_.notify_all();
             }
         }
     }

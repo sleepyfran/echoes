@@ -37,6 +37,8 @@ DownloadResult Downloader::run(const DownloadJob& job)
     return response->body;
 }
 
+void Downloader::on_done() {}
+
 void Downloader::queue_download(std::string url, size_t max_byte_size_to_download,
                                 concurrency::OnCompletedCallback<DownloadResult> on_completed)
 {

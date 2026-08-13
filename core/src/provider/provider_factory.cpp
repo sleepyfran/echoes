@@ -39,5 +39,7 @@ std::unique_ptr<media_provider::MediaProvider> create_provider(entities::Provide
         return nullptr;
     }
     }
+
+    return nullptr;
 }
 } // namespace providers

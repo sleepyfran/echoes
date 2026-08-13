@@ -10,9 +10,16 @@
 namespace media_provider
 {
 OneDriveMediaProvider::OneDriveMediaProvider(AuthStore* auth_store)
-    : FileBasedProvider(entities::ProviderId::OneDrive), client{onedrive_graph_host, onedrive_port},
+    : FileBasedProvider(entities::ProviderId::OneDrive),
       base_headers({{"Accept", utils::content_type_json}}), auth_store{auth_store}
 {
+}
+
+std::unique_ptr<httplib::SSLClient> OneDriveMediaProvider::create_client() const
+{
+    auto client = std::make_unique<httplib::SSLClient>(onedrive_graph_host, onedrive_port);
+    client->set_default_headers(base_headers);
+    return client;
 }
 
 FolderContentResult OneDriveMediaProvider::list_root()
@@ -26,7 +33,8 @@ FolderContentResult OneDriveMediaProvider::list_root()
 
     httplib::Headers headers(base_headers);
     headers.insert(auth_headers->begin(), auth_headers->end());
-    auto res = client.Get(onedrive_list_root_endpoint, headers);
+    auto client = create_client();
+    auto res = client->Get(onedrive_list_root_endpoint, headers);
     if (!res || res->status < 200 || res->status >= 300)
     {
         // TODO: Actually type this based on errors.
@@ -57,7 +65,9 @@ FolderContentResult OneDriveMediaProvider::list_folder(const entities::FolderMet
 
     httplib::Headers headers(base_headers);
     headers.insert(auth_headers->begin(), auth_headers->end());
-    auto res = client.Get(std::format("{}/{}/children", onedrive_items_endpoint, folder.id.value), headers);
+    auto client = create_client();
+    auto res = client->Get(std::format("{}/{}/children", onedrive_items_endpoint, folder.id.value),
+                           headers);
     if (!res || res->status < 200 || res->status >= 300)
     {
         // TODO: Actually type this based on errors.

@@ -48,8 +48,9 @@ class OneDriveMediaProvider : public FileBasedProvider
 {
   private:
     AuthStore* auth_store;
-    httplib::SSLClient client;
     httplib::Headers base_headers;
+
+    std::unique_ptr<httplib::SSLClient> create_client() const;
 
   public:
     OneDriveMediaProvider(AuthStore* auth_store);

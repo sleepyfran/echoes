@@ -16,7 +16,7 @@ enum class DownloadFailureReason : uint8_t
     ServerError,
 };
 
-using DownloadResult = std::variant<std::string_view, DownloadFailureReason>;
+using DownloadResult = std::variant<std::string, DownloadFailureReason>;
 
 struct DownloadJob
 {
@@ -33,6 +33,7 @@ class Downloader : concurrency::Concurrently<DownloadJob, DownloadResult>
 {
   private:
     DownloadResult run(const DownloadJob& job) override;
+    void on_done() override;
 
   public:
     Downloader(size_t concurrent_downloads = 4)
