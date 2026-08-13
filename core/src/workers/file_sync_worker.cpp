@@ -2,15 +2,7 @@
 #include "entities/file_system.h"
 #include "entities/provider.h"
 #include "entities/sync_messages.h"
-#include "httplib.hpp"
-#include "providers/media_provider.h"
-#include "utils.h"
-#include "workers/concurrent_file_discovery.h"
 #include <ctime>
-#include <functional>
-#include <memory>
-#include <mutex>
-#include <optional>
 #include <regex>
 #include <stop_token>
 #include <variant>
@@ -32,8 +24,8 @@ bool is_supported_file(entities::FileMetadata& file)
 
 void sync_file_based_provider(const Publisher<entities::SyncWorkerEvent>& pubsub,
                               downloader::Downloader& downloader,
+                              file_discovery::ConcurrentFileDiscovery& discovery,
                               const entities::FolderMetadata& root_folder,
-                              media_provider::FileBasedProvider& provider,
                               const std::stop_token& cancellation_token)
 {
     if (cancellation_token.stop_requested())
@@ -42,7 +34,6 @@ void sync_file_based_provider(const Publisher<entities::SyncWorkerEvent>& pubsub
         return;
     }
 
-    file_discovery::ConcurrentFileDiscovery discovery{provider};
     discovery.queue_discovery(root_folder);
     auto result = discovery.wait_for_all_files();
     if (result.files.size() == 0)

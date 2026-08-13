@@ -2,6 +2,7 @@
 #include "entities/provider.h"
 #include "entities/sync_messages.h"
 #include "utils.h"
+#include "workers/concurrent_file_discovery.h"
 #include "workers/downloader.h"
 #include "workers/file_sync_worker.h"
 #include <iostream>
@@ -52,10 +53,10 @@ void SyncWorker::run(const std::stop_token& token)
                             dynamic_cast<media_provider::FileBasedProvider*>(this->provider.get()))
                     {
                         downloader::Downloader downloader{8};
+                        file_discovery::ConcurrentFileDiscovery discovery{*file_based_provider};
                         auto args = std::get<entities::FileBasedProviderStartArgs>(m.args.args);
                         file_sync::sync_file_based_provider(this->publisher(), downloader,
-                                                            args.selected_folder,
-                                                            *file_based_provider, token);
+                                                            discovery, args.selected_folder, token);
                     }
                 },
                 [this](const entities::SyncWorkerForceSyncMessage& m)

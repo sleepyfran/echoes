@@ -1,8 +1,8 @@
 #pragma once
 
 #include "entities/sync_messages.h"
-#include "providers/media_provider.h"
 #include "pubsub.h"
+#include "workers/concurrent_file_discovery.h"
 #include "workers/downloader.h"
 #include <stop_token>
 namespace file_sync
@@ -14,7 +14,7 @@ namespace file_sync
  */
 void sync_file_based_provider(const Publisher<entities::SyncWorkerEvent>& pubsub,
                               downloader::Downloader& downloader,
+                              file_discovery::ConcurrentFileDiscovery& discovery,
                               const entities::FolderMetadata& root_folder,
-                              media_provider::FileBasedProvider& provider,
                               const std::stop_token& cancellation_token);
 } // namespace file_sync
